@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorBackgroundDefault">#fcfcfc</color>
+    <color name="colorBackgroundRainbow">#ececec</color>
+    <color name="colorBluish">#6971fa</color>
+    <color name="colorGlassGreen">#03dab5</color>
+    <color name="colorSapphire">#2d77fc</color>
+    <color name="colorDarkGray">#7e7e7e</color>
+
+    <color name="colorBgYellow">#fce9d8</color>
+    <color name="colorYellowStart">#fd901f</color>
+    <color name="colorYellowMiddle">#fc7f20</color>
+    <color name="colorYellowEnd">#fc6822</color>
+
+    <color name="text_gray_dark">#7f7f7f</color>
+    <color name="text_gray">#cccccc</color>
+    <color name="line_gray">#e5e5e5</color>
+    <color name="text_choose">#fb6522</color>
+    <color name="btn_corner">#dddddd</color>
+    <color name="btn_bg">#f7f7f7</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    
+    <color name="text_run_no_selectd">#B1B1B1</color>
+</resources>

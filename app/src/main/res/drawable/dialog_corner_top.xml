@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 用于设置信息对话框的圆角 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="#ffffff" />
+            <corners android:topLeftRadius="15dp" android:topRightRadius="15dp"/>
+            <!--<corners android:topRightRadius="15dp" />-->
+        </shape>
+    </item>
+</layer-list>

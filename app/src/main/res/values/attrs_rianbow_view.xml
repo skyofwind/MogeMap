@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RainbowView">
+        <attr name="count_color" format="color" />
+        <attr name="intensity_color" format="color" />
+        <attr name="text_default_color" format="color" />
+        <attr name="text_count_color" format="color" />
+        <attr name="big_paint_width" format="float" />
+        <attr name="big_radius" format="float" />
+        <attr name="rainbow_bg_color" format="color" />
+    </declare-styleable>
+</resources>

@@ -25,10 +25,16 @@ import java.util.List;
 public class GpsStrengthView extends View {
     private final static String TAG = "GpsStrengthView";
     private Context context;
+    //view的宽度
     private int mWidth;
+    //view的高度
     private int mHeight;
+    //圆柱宽度
     private float columnWidth;
+    private float columHeight;
+    //圆柱间隔
     private float columnInterval;
+    private float heights;
     private int strength = 0;
     public GpsStrengthView(Context context) {
         super(context);
@@ -51,6 +57,7 @@ public class GpsStrengthView extends View {
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+
         int WIDTH_DEFAULT = 400;
         int HEIGHT_DEFAULT = 400;
         if (widthMeasureSpec == MeasureSpec.AT_MOST && heightSpecSize == MeasureSpec.AT_MOST) {
@@ -66,7 +73,11 @@ public class GpsStrengthView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w;
         mHeight = h;
-        columnWidth = w*26/1071;
+        columnWidth = 10;
+        columHeight = 20;
+        columnInterval = 5;
+        heights = columHeight*3+columnWidth;
+        log("mWidth="+mWidth+" herht="+mHeight);
     }
     @Override
     protected void onDraw(Canvas canvas){
@@ -77,18 +88,53 @@ public class GpsStrengthView extends View {
         final int paddingTop = getPaddingTop();
         final int paddingBottom = getPaddingBottom();
 
-        columnInterval = 5;
         drawAll(canvas, paddingLeft, paddingRight, paddingTop, paddingBottom, strength);
 
     }
     private void drawAll(Canvas canvas, int pl, int pr, int pt, int pb, int strength){
-        for(int i=0;i<strength;i++){
-            drawModule(canvas, (int)(pl+columnInterval*i), pr, pt, pb);
+        for(int i=0;i<3;i++){
+            if(i < strength){
+                drawModule(canvas, (int)(pl+columnInterval*i), pr, pt, pb, i);
+            }else {
+                drawNullColumn(canvas, (int)(pl+columnInterval*i), pr, pt, pb, i);
+            }
         }
     }
 
-    private void drawModule(Canvas canvas, int pl, int pr, int pt, int pb){
+    private void drawModule(Canvas canvas, int pl, int pr, int pt, int pb, int position){
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+        //paint.setStrokeWidth(1f);
+        paint.setColor(context.getColor(R.color.yellow_shit));
+        float offsetLeft = pl+(columnWidth+columnInterval)*position;
+        float height = columHeight*(position+1);
+        RectF rectF = new RectF((float) (offsetLeft), (float)(pt+heights-height-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+heights-height+columnWidth/2));
+        canvas.drawArc(rectF, 180, 180, false, paint);
+        rectF = new RectF((float) (offsetLeft), (float)(pt+heights-height), (float)(offsetLeft+columnWidth), (float) (pt+heights));
+        canvas.drawRect(rectF, paint);
+        rectF = new RectF((float) (offsetLeft), (float) (pt+heights-height-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+heights-height+columnWidth/2));
+        canvas.drawArc(rectF, 180, -180, false, paint);
 
+        log("p="+position+" offset="+offsetLeft+" height="+height);
+        log("one="+(pt+heights-height-columnWidth/2)+" "+(pt+heights-height+columnWidth/2));
+        log("two="+(pt+heights-height)+" "+(pt+heights-height));
+        log("three="+(pt+heights-height-columnWidth/2)+" "+(pt+heights-height+columnWidth/2));
+    }
+    private void drawNullColumn(Canvas canvas, int pl, int pr, int pt, int pb, int position){
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+        //paint.setStrokeWidth(1f);
+        paint.setColor(context.getColor(R.color.text_gray));
+        float offsetLeft = pl+(columnWidth+columnInterval)*position;
+        float height = columHeight*(position+1);
+        RectF rectF = new RectF((float) (offsetLeft), (float)(pt+heights-height-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+heights-height+columnWidth/2));
+        canvas.drawArc(rectF, 180, 180, false, paint);
+        rectF = new RectF((float) (offsetLeft), (float)(pt+heights-height), (float)(offsetLeft+columnWidth), (float) (pt+heights));
+        canvas.drawRect(rectF, paint);
+        rectF = new RectF((float) (offsetLeft), (float) (pt+heights-height-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+heights-height+columnWidth/2));
+        canvas.drawArc(rectF, 180, -180, false, paint);
     }
     private float getOffset(float width){
         float offset = (width < columnInterval)?(columnInterval-width)/2:0;
@@ -99,5 +145,9 @@ public class GpsStrengthView extends View {
     }
     private int getColor(int id){
         return context.getColor(id);
+    }
+    public void setStrength(int strength){
+        this.strength = strength;
+        invalidate();
     }
 }

@@ -15,6 +15,7 @@
     <color name="colorYellowStart">#fd901f</color>
     <color name="colorYellowMiddle">#fc7f20</color>
     <color name="colorYellowEnd">#fc6822</color>
+    <color name="yellow_shit">#f2b21e</color>
 
     <color name="text_gray_dark">#7f7f7f</color>
     <color name="text_gray">#cccccc</color>

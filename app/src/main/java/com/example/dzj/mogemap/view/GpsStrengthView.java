@@ -52,7 +52,7 @@ public class GpsStrengthView extends View {
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
 
         int WIDTH_DEFAULT = 400;
-        int HEIGHT_DEFAULT = 400;
+        int HEIGHT_DEFAULT = 200;
         if (widthMeasureSpec == MeasureSpec.AT_MOST && heightSpecSize == MeasureSpec.AT_MOST) {
             setMeasuredDimension(WIDTH_DEFAULT, HEIGHT_DEFAULT);
         } else if (widthSpecMode == MeasureSpec.AT_MOST) {

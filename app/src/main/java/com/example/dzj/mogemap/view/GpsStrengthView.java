@@ -1,4 +1,4 @@
-package com.example.dzj.mogemap.utils;
+package com.example.dzj.mogemap.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

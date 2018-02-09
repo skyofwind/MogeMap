@@ -56,7 +56,8 @@ public class MapUtil {
     public void init(MapView view) {
         mapView = view;
         baiduMap = mapView.getMap();
-        mapView.showZoomControls(true);
+        mapView.showScaleControl(false);
+        mapView.showZoomControls(false);
     }
     public void onPause() {
         if (null != mapView) {

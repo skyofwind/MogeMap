@@ -20,8 +20,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:background="@drawable/translucent_bg"
             android:orientation="horizontal">
             <LinearLayout
@@ -47,6 +47,7 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/run_outdoor"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/tab_text_size"
                     android:layout_marginTop="@dimen/run_type_text_margin_top"/>
             </LinearLayout>
             <LinearLayout
@@ -72,6 +73,7 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/run_indoor"
                     android:textColor="@color/text_run_no_selectd"
+                    android:textSize="@dimen/tab_text_size"
                     android:layout_marginTop="@dimen/run_type_text_margin_top"/>
             </LinearLayout>
             <LinearLayout
@@ -97,6 +99,7 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/walk"
                     android:textColor="@color/text_run_no_selectd"
+                    android:textSize="@dimen/tab_text_size"
                     android:layout_marginTop="@dimen/run_type_text_margin_top"/>
             </LinearLayout>
             <LinearLayout
@@ -122,16 +125,112 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/cycle"
                     android:textColor="@color/text_run_no_selectd"
+                    android:textSize="@dimen/tab_text_size"
                     android:layout_marginTop="@dimen/run_type_text_margin_top"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.example.dzj.mogemap.view.GpsStrengthView
-                android:id="@+id/gpsStrength"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="#55ffffff">
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="100dp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="5dp"
+                    android:background="@drawable/button_corner">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GPS"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/tab_text_size"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="正在搜索..."
+                        android:textSize="@dimen/tab_text_size"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone"/>
+                    <com.example.dzj.mogemap.view.GpsStrengthView
+                        android:id="@+id/gpsStrength"
+                        android:layout_width="15dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="时间目标"
+                            android:layout_gravity="center"
+                            android:textColor="@color/black"/>
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/forward"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="500"
+                            android:textColor="@color/black"
+                            android:textSize="60sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="分钟"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:background="@drawable/translucent_bg_over">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/play"/>
         </LinearLayout>
     </LinearLayout>
 

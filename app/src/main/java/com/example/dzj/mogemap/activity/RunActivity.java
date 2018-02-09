@@ -34,6 +34,7 @@ import com.example.dzj.mogemap.utils.BitmapUtil;
 import com.example.dzj.mogemap.utils.MapUtil;
 import com.example.dzj.mogemap.utils.StepDetection;
 import com.example.dzj.mogemap.utils.SystemUtils;
+import com.example.dzj.mogemap.view.GpsStrengthView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +155,7 @@ public class RunActivity extends AppCompatActivity {
     private void initViews() {
         initViewOfIcon();
         gpsStrengthView = (GpsStrengthView)findViewById(R.id.gpsStrength);
-        gpsStrengthView.setStrength(3);
+        gpsStrengthView.setStrength(0);
         final int[] width = {0};
         if(iconItems.size() > 0){
             iconItems.get(0).post(new Runnable() {

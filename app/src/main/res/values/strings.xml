@@ -14,7 +14,7 @@
     <string name="walk">步行</string>
     <string name="cycle">骑行</string>
 
-    <dimen name="tab_text_size">16sp</dimen>
+    <dimen name="tab_text_size">12sp</dimen>
     <dimen name="run_type_icon_size">40dp</dimen>
     <dimen name="run_type_text_margin_top">10dp</dimen>
     <dimen name="run_type_icon_margin_left">0dp</dimen>

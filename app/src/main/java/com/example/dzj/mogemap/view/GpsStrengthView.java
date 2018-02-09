@@ -29,6 +29,7 @@ public class GpsStrengthView extends View {
     private float columnInterval;
     private float heights;
     private int strength = 0;
+
     public GpsStrengthView(Context context) {
         super(context);
         this.context = context;
@@ -45,14 +46,16 @@ public class GpsStrengthView extends View {
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        int WIDTH_DEFAULT = 400;
-        int HEIGHT_DEFAULT = 200;
+        //setMeasuredDimension(widthSpecMode, heightSpecMode);
+        log("conml "+widthSpecSize+" onMeasure "+heightSpecSize);
+        int WIDTH_DEFAULT = 45;
+        int HEIGHT_DEFAULT = 54;
         if (widthMeasureSpec == MeasureSpec.AT_MOST && heightSpecSize == MeasureSpec.AT_MOST) {
             setMeasuredDimension(WIDTH_DEFAULT, HEIGHT_DEFAULT);
         } else if (widthSpecMode == MeasureSpec.AT_MOST) {
@@ -63,19 +66,21 @@ public class GpsStrengthView extends View {
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh){
+        log("conml"+"onSizeChanged");
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w;
         mHeight = h;
-        columnWidth = 10;
-        columHeight = 20;
-        columnInterval = 5;
+        columnWidth = 8;
+        columHeight = 10;
+        columnInterval = 3;
         heights = columHeight*3+columnWidth;
         log("mWidth="+mWidth+" herht="+mHeight);
+        //widthView =
     }
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
-
+        log("conml"+"onDraw");
         final int paddingLeft = getPaddingLeft();
         final int paddingRight = getPaddingRight();
         final int paddingTop = getPaddingTop();
@@ -106,13 +111,13 @@ public class GpsStrengthView extends View {
         canvas.drawArc(rectF, 180, 180, false, paint);
         rectF = new RectF((float) (offsetLeft), (float)(pt+heights-height), (float)(offsetLeft+columnWidth), (float) (pt+heights));
         canvas.drawRect(rectF, paint);
-        rectF = new RectF((float) (offsetLeft), (float) (pt+heights-height-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+heights-height+columnWidth/2));
+        rectF = new RectF((float) (offsetLeft), (float) (pt+heights-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+columnWidth/2+heights+pb));
         canvas.drawArc(rectF, 180, -180, false, paint);
 
-        log("p="+position+" offset="+offsetLeft+" height="+height);
-        log("one="+(pt+heights-height-columnWidth/2)+" "+(pt+heights-height+columnWidth/2));
-        log("two="+(pt+heights-height)+" "+(pt+heights-height));
-        log("three="+(pt+heights-height-columnWidth/2)+" "+(pt+heights-height+columnWidth/2));
+        //log("p="+position+" offset="+offsetLeft+" height="+height);
+        //log("one="+(pt+heights-height-columnWidth/2)+" "+(pt+heights-height+columnWidth/2));
+        //log("two="+(pt+heights-height)+" "+(pt+heights-height));
+        //log("three="+(pt+heights-height-columnWidth/2)+" "+(pt+heights-height+columnWidth/2));
     }
     private void drawNullColumn(Canvas canvas, int pl, int pr, int pt, int pb, int position){
         Paint paint = new Paint();
@@ -126,7 +131,7 @@ public class GpsStrengthView extends View {
         canvas.drawArc(rectF, 180, 180, false, paint);
         rectF = new RectF((float) (offsetLeft), (float)(pt+heights-height), (float)(offsetLeft+columnWidth), (float) (pt+heights));
         canvas.drawRect(rectF, paint);
-        rectF = new RectF((float) (offsetLeft), (float) (pt+heights-height-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+heights-height+columnWidth/2));
+        rectF = new RectF((float) (offsetLeft), (float) (pt+heights-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+columnWidth/2+heights+pb));
         canvas.drawArc(rectF, 180, -180, false, paint);
     }
     private float getOffset(float width){

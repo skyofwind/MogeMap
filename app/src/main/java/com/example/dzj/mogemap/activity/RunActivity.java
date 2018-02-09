@@ -34,7 +34,6 @@ import com.example.dzj.mogemap.utils.BitmapUtil;
 import com.example.dzj.mogemap.utils.MapUtil;
 import com.example.dzj.mogemap.utils.StepDetection;
 import com.example.dzj.mogemap.utils.SystemUtils;
-import com.example.dzj.mogemap.view.GpsStrengthView;
 
 import java.util.ArrayList;
 import java.util.List;

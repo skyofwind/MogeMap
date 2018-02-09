@@ -1,22 +1,15 @@
-package com.example.dzj.mogemap.view;
+package com.example.dzj.mogemap.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
 import com.example.dzj.mogemap.R;
-import com.example.dzj.mogemap.modle.RunRecord;
-
-import java.util.List;
 
 /**
  * Created by dzj on 2018/2/8.

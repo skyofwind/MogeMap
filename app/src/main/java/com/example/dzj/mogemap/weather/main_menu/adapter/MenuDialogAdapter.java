@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main_menu.adapter;
+package com.example.dzj.mogemap.weather.main_menu.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.dzj.theweather.R;
-import com.example.dzj.theweather.main_menu.bean.MenuData;
+import com.example.dzj.mogemap.R;
+import com.example.dzj.mogemap.weather.main_menu.bean.MenuData;
 
 import java.util.List;
 

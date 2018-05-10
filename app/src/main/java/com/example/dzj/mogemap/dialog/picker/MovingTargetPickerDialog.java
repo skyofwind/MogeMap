@@ -27,6 +27,8 @@ import java.util.Map;
 
 public class MovingTargetPickerDialog extends Dialog {
 
+    public static String dataName = "run_outdoor_data.json";
+
     private MovingTargetPickerDialog.Params params;
 
     public MovingTargetPickerDialog(Context context, int themeResId) {
@@ -39,7 +41,7 @@ public class MovingTargetPickerDialog extends Dialog {
 
 
     public interface OnMovingTargetSelectedListener {
-        void onMovingTargetSelected(String[] cityAndArea);
+        void onMovingTargetSelected(String[] datas);
     }
 
 
@@ -58,12 +60,13 @@ public class MovingTargetPickerDialog extends Dialog {
         private final Context context;
         private final MovingTargetPickerDialog.Params params;
 
+
         public Builder(Context context) {
             this.context = context;
             params = new MovingTargetPickerDialog.Params();
 
             try {
-                InputStreamReader inputReader = new InputStreamReader(context.getAssets().open("target_data.json"));
+                InputStreamReader inputReader = new InputStreamReader(context.getAssets().open(dataName));
                 BufferedReader bufReader = new BufferedReader(inputReader);
                 String line = "";
                 StringBuffer result = new StringBuffer();
@@ -111,7 +114,6 @@ public class MovingTargetPickerDialog extends Dialog {
                     dialog.dismiss();
                 }
             });
-
             final LoopView loopType = (LoopView) view.findViewById(R.id.loop_type);
             loopType.setArrayList(new ArrayList(params.dataList.keySet()));
             Log.d("result",loopType.arrayList.toString());
@@ -140,15 +142,16 @@ public class MovingTargetPickerDialog extends Dialog {
             win.getDecorView().setPadding(0, 0, 0, 0);
             WindowManager.LayoutParams lp = win.getAttributes();
             if (SystemUtils.MAX_WIDTH != 0){
-                lp.width = SystemUtils.MAX_WIDTH-100;
+                lp.width = SystemUtils.MAX_WIDTH-50;
             }else {
                 lp.width = WindowManager.LayoutParams.MATCH_PARENT;
             }
-
             //Log.d("match",""+WindowManager.LayoutParams.MATCH_PARENT);
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.y = 30;
             win.setAttributes(lp);
-            win.setGravity(Gravity.CENTER);
+            //win.setGravity(Gravity.BOTTOM);
+            win.setGravity(Gravity.BOTTOM);
             win.setWindowAnimations(R.style.Animation_Bottom_Rising);
 
             dialog.setContentView(view);
@@ -160,6 +163,9 @@ public class MovingTargetPickerDialog extends Dialog {
             dialog.setParams(params);
 
             return dialog;
+        }
+        public String[] getChoose(){
+            return getCurrRegionValue();
         }
     }
 }

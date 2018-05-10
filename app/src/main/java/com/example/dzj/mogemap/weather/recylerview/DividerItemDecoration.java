@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.recylerview;
+package com.example.dzj.mogemap.weather.recylerview;
 
 import android.content.Context;
 import android.content.res.TypedArray;

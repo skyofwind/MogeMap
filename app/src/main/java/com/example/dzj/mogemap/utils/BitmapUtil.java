@@ -2,10 +2,16 @@ package com.example.dzj.mogemap.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.util.Log;
 
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.example.dzj.mogemap.R;
+
+import static android.graphics.Bitmap.Config.ARGB_8888;
 
 
 /**
@@ -54,5 +60,19 @@ public class BitmapUtil {
             resourceId = res.getIdentifier("icon_markx", "mipmap", context.getPackageName());
         }
         return BitmapDescriptorFactory.fromResource(resourceId);
+    }
+    public static Bitmap mergeBitmap(Bitmap backBitmap, Bitmap frontBitmap) {
+
+        if (backBitmap == null || backBitmap.isRecycled()
+                || frontBitmap == null || frontBitmap.isRecycled()) {
+            Log.e("mybitmap", "backBitmap=" + backBitmap + ";frontBitmap=" + frontBitmap);
+            return null;
+        }
+        Bitmap bitmap = backBitmap.copy(ARGB_8888, true);
+        Canvas canvas = new Canvas(bitmap);
+        Rect baseRect  = new Rect(0, 0, backBitmap.getWidth(), backBitmap.getHeight());
+        Rect frontRect = new Rect(0, 0, frontBitmap.getWidth(), frontBitmap.getHeight());
+        canvas.drawBitmap(frontBitmap, frontRect, baseRect, null);
+        return bitmap;
     }
 }

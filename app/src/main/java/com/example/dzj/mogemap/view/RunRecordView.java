@@ -8,14 +8,19 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
 import com.example.dzj.mogemap.R;
-import com.example.dzj.mogemap.modle.RunRecord;
+import com.example.dzj.mogemap.modle.Mogemap_run_record;
+import com.example.dzj.mogemap.utils.OtherUtil;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,7 +34,8 @@ public class RunRecordView extends View {
     private int mHeight;
     private float columnWidth;
     private float columnInterval;
-    private List<RunRecord> records;
+    private List<Mogemap_run_record> records;
+    private List<Float> heightProportion;
 
     public RunRecordView(Context context) {
         super(context);
@@ -78,6 +84,7 @@ public class RunRecordView extends View {
         final int paddingRight = getPaddingRight();
         final int paddingTop = getPaddingTop();
         final int paddingBottom = getPaddingBottom();
+        
 
         columnInterval = getColumnInterval(mWidth, paddingLeft, paddingRight);
         drawAll(canvas, paddingLeft, paddingRight, paddingTop, paddingBottom);
@@ -87,7 +94,7 @@ public class RunRecordView extends View {
         if(records !=null && records.size() > 0){
             for(int i = 0;i < 7; i++){
                 if(i < records.size()){
-                    drawModule(canvas, (int)(pl+columnInterval*i), pr, pt, pb, records.get(i));
+                    drawModule(canvas, (int)(pl+columnInterval*i), pr, pt, pb, records.get(records.size()-1-i), heightProportion.get(records.size()-1-i));
                 }else {
                     drawNullColumn(canvas, (int)(pl+columnInterval*i), pr, pt, pb, i);
                 }
@@ -99,33 +106,35 @@ public class RunRecordView extends View {
         }
     }
 
-    private void drawModule(Canvas canvas, int pl, int pr, int pt, int pb, RunRecord record){
+    private void drawModule(Canvas canvas, int pl, int pr, int pt, int pb, Mogemap_run_record record, float proportion){
         //低端日期
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTypeface(Typeface.SANS_SERIF);
-        paint.setColor(context.getResources().getColor(R.color.colorDarkGray, null));
+        paint.setColor(getColor(R.color.colorDarkGray));
         paint.setTextSize(30f);
         Paint.FontMetrics fontMetrics = paint.getFontMetrics();
         float baseY = mHeight-pb;
         float textHeight = fontMetrics.bottom-fontMetrics.top;
-        float strWidth = paint.measureText(record.getDate());
-        canvas.drawText(record.getDate(), pl+getOffset(strWidth), baseY, paint);
+        String myDate = getMonthDay(record.getDate());
+        float strWidth = paint.measureText(myDate);
+        canvas.drawText(myDate, pl+getOffset(strWidth), baseY, paint);
         //圆柱
         int[] colors = new int[]{getColor(R.color.colorYellowStart), getColor(R.color.colorYellowMiddle), getColor(R.color.colorYellowEnd)};
         float cOffset = getOffset(columnWidth);
-        float height = (mHeight-pb-pt-3*textHeight);
+        float height = (mHeight-pb-pt-3*textHeight)*proportion;
         Shader lg = new LinearGradient(pl+cOffset, mHeight-pb-textHeight-height-columnWidth/2, pl+cOffset+columnWidth, baseY-textHeight, colors, new float[]{0 , 0.5f, 1.0f}, Shader.TileMode.REPEAT);
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(1f);
-        //paint.setColor(context.getColor(R.color.colorBgYellow));
+        //paint.setColor(context.getColor(R.color.red));
         paint.setShader(lg);
         RectF rectF = new RectF(pl+cOffset, mHeight-pb-textHeight-height, pl+cOffset+columnWidth, baseY-textHeight);
         canvas.drawRect(rectF, paint);
-        rectF = new RectF((float) (pl+cOffset-0.5), mHeight-pb-textHeight-height-columnWidth/2+1, (float)(pl+cOffset+columnWidth-0.5), mHeight-pb-textHeight-height+columnWidth/2+1);
+        //paint.setColor(context.getColor(R.color.black));
+        rectF = new RectF((float) (pl+cOffset-0.5), (float) (mHeight-pb-textHeight-height-columnWidth/2+0.5), (float)(pl+cOffset+columnWidth-0.5), (float) (mHeight-pb-textHeight-height+columnWidth/2+0.5));
         canvas.drawArc(rectF, 180, 180, false, paint);
         //顶端路程
         paint = new Paint();
@@ -135,8 +144,8 @@ public class RunRecordView extends View {
         paint.setColor(Color.BLACK);
         paint.setTextSize(30f);
         baseY = mHeight-pb-textHeight-height-columnWidth/2-10;
-        strWidth = paint.measureText(record.getDistance()+"");
-        canvas.drawText(record.getDistance()+"", pl+getOffset(strWidth), baseY, paint);
+        strWidth = paint.measureText(OtherUtil.getKM(record.getDistance()));
+        canvas.drawText(OtherUtil.getKM(record.getDistance()), pl+getOffset(strWidth), baseY, paint);
 
     }
     private float getColumnInterval(int w, int pl, int pr){
@@ -151,10 +160,15 @@ public class RunRecordView extends View {
         Log.i(TAG,str);
     }
     private int getColor(int id){
-        return context.getColor(id);
+        if(Build.VERSION.SDK_INT >= 23){
+            return context.getColor(id);
+        }else {
+            return context.getResources().getColor(id);
+        }
     }
-    public void setRecords(List<RunRecord> records){
+    public void setRecords(List<Mogemap_run_record> records){
         this.records = records;
+        dealHeight();
         invalidate();
     }
     private void drawNullColumn(Canvas canvas, int pl, int pr, int pt, int pb, int postion){
@@ -163,7 +177,7 @@ public class RunRecordView extends View {
         paint.setAntiAlias(true);
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTypeface(Typeface.SANS_SERIF);
-        paint.setColor(context.getResources().getColor(R.color.colorDarkGray, null));
+        paint.setColor(getColor(R.color.colorDarkGray));
         paint.setTextSize(30f);
         Paint.FontMetrics fontMetrics = paint.getFontMetrics();
         float baseY = mHeight-pb;
@@ -178,13 +192,13 @@ public class RunRecordView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(1f);
-        paint.setColor(context.getColor(R.color.colorBgYellow));
+        paint.setColor(getColor(R.color.colorBgYellow));
         //paint.setShader(lg);
         height = getSY(postion, height);
 
         RectF rectF = new RectF(pl+cOffset, mHeight-pb-textHeight-height, pl+cOffset+columnWidth, baseY-textHeight);
         canvas.drawRect(rectF, paint);
-        rectF = new RectF((float) (pl+cOffset-0.5), mHeight-pb-textHeight-height-columnWidth/2+1, (float)(pl+cOffset+columnWidth-0.5), mHeight-pb-textHeight-height+columnWidth/2+1);
+        rectF = new RectF((float) (pl+cOffset-0.5), (float) (mHeight-pb-textHeight-height-columnWidth/2+0.5), (float)(pl+cOffset+columnWidth-0.5), (float) (mHeight-pb-textHeight-height+columnWidth/2+0.5));
         canvas.drawArc(rectF, 180, 180, false, paint);
     }
     private float getSY(int postion, float height){
@@ -213,5 +227,31 @@ public class RunRecordView extends View {
                 break;
         }
         return (float)h;
+    }
+    private String getMonthDay(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        return month+"/"+day;
+    }
+    private void dealHeight(){
+        if(records.size() > 0){
+            heightProportion = new ArrayList<>();
+            double max = records.get(0).getDistance();
+            for(int i = 1; i < records.size(); i++){
+                if(max < records.get(i).getDistance()){
+                    max = records.get(i).getDistance();
+                }
+            }
+            for(int i = 0; i < records.size(); i++){
+                heightProportion.add((float)(records.get(i).getDistance()/max));
+            }
+            for (float f: heightProportion){
+                //log("myFloat="+f);
+            }
+            //log("records.size()="+records.size());
+            //log("heightProportion.size()="+heightProportion.size());
+        }
     }
 }

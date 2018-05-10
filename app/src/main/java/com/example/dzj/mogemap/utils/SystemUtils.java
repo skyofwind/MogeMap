@@ -51,8 +51,15 @@ public class SystemUtils {
 		Log.d("MAX_HEIGHT",""+MAX_HEIGHT);
 		Log.d("MAX_WIDTH",""+MAX_WIDTH);
 	}
+	//dp转px
 	public static int dip2px(Context context, float dpValue) {
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (dpValue * scale + 0.5f);
 	}
+	//px转dp
+	public static int px2dip(Context context, float pxValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (pxValue / scale + 0.5f);
+	}
+
 }

@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -50,11 +51,11 @@ public class RainbowView extends View {
     public RainbowView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RainbowView);
-        countColor = a.getColor(R.styleable.RainbowView_count_color, context.getResources().getColor(R.color.colorBluish, null));
-        intensityColor = a.getColor(R.styleable.RainbowView_intensity_color, context.getResources().getColor(R.color.colorGlassGreen, null));
-        textDefaultColor = a.getColor(R.styleable.RainbowView_text_default_color, context.getResources().getColor(R.color.colorDarkGray, null));
-        textCountColor = a.getColor(R.styleable.RainbowView_text_count_color, context.getResources().getColor(R.color.colorSapphire, null));
-        rainbowBgColor = a.getColor(R.styleable.RainbowView_rainbow_bg_color, context.getResources().getColor(R.color.colorBackgroundRainbow, null));
+        countColor = a.getColor(R.styleable.RainbowView_count_color, getColor(context, R.color.colorBluish));
+        intensityColor = a.getColor(R.styleable.RainbowView_intensity_color, getColor(context,R.color.colorGlassGreen));
+        textDefaultColor = a.getColor(R.styleable.RainbowView_text_default_color, getColor(context,R.color.colorDarkGray));
+        textCountColor = a.getColor(R.styleable.RainbowView_text_count_color, getColor(context,R.color.colorSapphire));
+        rainbowBgColor = a.getColor(R.styleable.RainbowView_rainbow_bg_color, getColor(context,R.color.colorBackgroundRainbow));
         bigPaintWidth = a.getFloat(R.styleable.RainbowView_big_paint_width, 40f);
         bigRadius = a.getFloat(R.styleable.RainbowView_big_radius, 300f);
         a.recycle();
@@ -387,5 +388,14 @@ public class RainbowView extends View {
         if(!point1.isLeft() && !point2.isLeft()){
             exchangePoint(point1, point2);
         }
+    }
+    private int getColor(Context context, int id){
+        int rid = -1;
+        if(Build.VERSION.SDK_INT >= 23){
+            rid = context.getColor(id);
+        }else {
+            rid = context.getResources().getColor(id);
+        }
+        return rid;
     }
 }

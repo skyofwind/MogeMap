@@ -1,4 +1,4 @@
-package org.studyplatform.model;
+package com.example.dzj.mogemap.modle;
 
 public class UserRunPK {
     MogeUserItem win;

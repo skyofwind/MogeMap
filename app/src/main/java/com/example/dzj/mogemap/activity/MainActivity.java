@@ -2,8 +2,8 @@ package com.example.dzj.mogemap.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,18 +15,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.example.dzj.mogemap.R;
 import com.example.dzj.mogemap.adapter.MyFragmentPagerAdapter;
 import com.example.dzj.mogemap.fragment.MineManagerFragment;
 import com.example.dzj.mogemap.fragment.ShouyeManagerFragment;
 import com.example.dzj.mogemap.fragment.WeatherManagerFragment;
+import com.example.dzj.mogemap.modle.Mogemap_user;
+import com.example.dzj.mogemap.utils.BitmapUtil;
+import com.example.dzj.mogemap.utils.Config;
+import com.example.dzj.mogemap.utils.HttpUtil;
+import com.example.dzj.mogemap.utils.MyPrefs;
 import com.example.dzj.mogemap.utils.SystemUtils;
+import com.example.dzj.mogemap.utils.UserManager;
+import com.example.dzj.mogemap.weather.recylerview.hRecyclerViewAdapter;
+import com.sina.weibo.sdk.auth.AccessTokenKeeper;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.tencent.tauth.Tencent;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+import okhttp3.Call;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, hRecyclerViewAdapter.SaveEditListener {
     private final static String TAG = "MainActivity";
     private ViewPager viewpager;
+    private MyFragmentPagerAdapter adapter;
     private LinearLayout bottom;
     private TextView shouye,weather,mine;
     private ImageView cursor;
@@ -38,13 +54,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //android6.0需要使用的权限声明
     private final int SDK_PERMISSION_REQUEST = 127;
     private String permissionInfo;
+    public static Tencent mTencent ;
+    public static Oauth2AccessToken mAccessToken;
+    public static String edit_text=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mTencent = Tencent.createInstance(Config.QQ_APPID, getApplicationContext());
+        MyPrefs.getInstance().initSharedPreferences(this);
         getPersimmions();
         init();
+        initLoginType();
+        BitmapUtil.init();
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
     }
     @Override
     protected void onStart(){
@@ -58,6 +86,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStop(){
         super.onStop();
     }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        MyPrefs.getInstance().onDestory();
+        mTencent = null;
+        mAccessToken = null;
+    }
     private void init(){
         viewpager = (ViewPager)findViewById(R.id.myviewpager);
         bottom = (LinearLayout)findViewById(R.id.bottomlinear);
@@ -67,7 +102,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnArgs=new TextView[]{shouye,weather,mine};
         cursor=(ImageView)findViewById(R.id.cursor_btn);
-        cursor.setBackgroundColor(getColor(R.color.text_choose));
+        if(Build.VERSION.SDK_INT >= 23){
+            cursor.setBackgroundColor(getColor(R.color.text_choose));
+        }else {
+            cursor.setBackgroundColor(getResources().getColor(R.color.text_choose));
+        }
+
 
         shouye.post(new Runnable() {
             @Override
@@ -88,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragments.add(new WeatherManagerFragment());
         fragments.add(new MineManagerFragment());
 
-        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragments);
+        adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragments);
         viewpager.setAdapter(adapter);
 
         bottom.post(new Runnable() {
@@ -188,6 +228,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
             }
+            if(checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
+                permissions.add(Manifest.permission.RECEIVE_SMS);
+            }
+            if(checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
+                permissions.add(Manifest.permission.SEND_SMS);
+            }
 			/*
 			 * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
 			 */
@@ -231,11 +277,79 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setTabTextColor(int position){
         for(int i = 0; i < textViewId.length; i++){
             if(position == i){
-                btnArgs[i].setTextColor(getColor(R.color.text_choose));
+                if(Build.VERSION.SDK_INT >= 23){
+                    btnArgs[i].setTextColor(getColor(R.color.text_choose));
+                }else {
+                    btnArgs[i].setTextColor(getResources().getColor(R.color.text_choose));
+                }
+
             }else {
-                btnArgs[i].setTextColor(getColor(R.color.black));
+                if(Build.VERSION.SDK_INT >= 23){
+                    btnArgs[i].setTextColor(getColor(R.color.black));
+                }else {
+                    btnArgs[i].setTextColor(getResources().getColor(R.color.black));
+                }
+
             }
         }
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        adapter.getItem(2).onActivityResult(requestCode, resultCode, data);
+        adapter.getItem(1).onActivityResult(requestCode, resultCode, data);
+    }
+    private void initLoginType() {
+        String url;
+        if (MyPrefs.getInstance().readString(MyPrefs.QQ_OPEN_ID, 0) != null &&
+                !MyPrefs.getInstance().readString(MyPrefs.QQ_OPEN_ID, 0).equals("")) {
+            String token = MyPrefs.getInstance().readString(MyPrefs.QQ_ACCESS_TOKEN, 0);
+            String expires = MyPrefs.getInstance().readString(MyPrefs.QQ_EXPIRES_IN, 0);
+            String openId = MyPrefs.getInstance().readString(MyPrefs.QQ_OPEN_ID, 0);
+            Log.d("sdasdasd",token+"  "+expires+"  "+openId);
+            mTencent.setOpenId(openId);
+            mTencent.setAccessToken(token, expires);
+            url = HttpUtil.GET_USER_BY_QQ_URL+"/"+openId;
+            Log.d(TAG, "initLoginType: "+url);
+            getUser(url);
+        }else if (MyPrefs.getInstance().readString(MyPrefs.SINA_UID, 1) != null &&
+                !MyPrefs.getInstance().readString(MyPrefs.SINA_UID, 1).equals("")) {
+            String uid = MyPrefs.getInstance().readString(MyPrefs.SINA_UID, 1);
+            mAccessToken = AccessTokenKeeper.readAccessToken(this);
+            url = HttpUtil.GET_USER_BY_WEIBO_URL+"/"+uid;
+            Log.d(TAG, "initLoginType: "+url);
+            getUser(url);
+        }
+    }
+    private void getUser(String url){
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        //tip("请求失败");
+                        Log.d("response:",e.toString()+"  call="+call.toString()+" id="+id);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.d("response:",response);
+                        Mogemap_user user = JSON.parseObject(response, Mogemap_user.class);
+                        UserManager.getInstance().setUser(user);
+//                        Intent intent = new Intent();
+//                        intent.setAction(ShouyeBroadcastReciver.SHOU_YE);
+//                        sendBroadcast(intent);
+                    }
+                });
+    }
+
+    @Override
+    public void SaveEdit(int position, String string) {
+        if(position==0){
+            edit_text=string;
+        }
     }
 }

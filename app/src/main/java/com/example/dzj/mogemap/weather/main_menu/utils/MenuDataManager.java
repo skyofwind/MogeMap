@@ -1,8 +1,8 @@
-package com.example.dzj.theweather.main_menu.utils;
+package com.example.dzj.mogemap.weather.main_menu.utils;
 
 import android.content.Context;
 
-import com.example.dzj.theweather.main_menu.bean.MenuData;
+import com.example.dzj.mogemap.weather.main_menu.bean.MenuData;
 
 import java.util.List;
 

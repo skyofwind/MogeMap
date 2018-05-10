@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main;
+package com.example.dzj.mogemap.weather.main;
 
 import android.content.Context;
 import android.content.Intent;

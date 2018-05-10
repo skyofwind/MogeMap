@@ -2,36 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/dialog_corner">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="40dip"
-        android:background="#F8F8F8">
+        android:background="@drawable/dialog_corner_top">
 
         <TextView
-            android:id="@+id/tx_title"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="22dip"
-            android:textColor="#333333"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tx_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:paddingBottom="10dip"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingTop="10dip"
-            android:text="@string/timepicker_finish"
-            android:textColor="#8A7ED8"
-            android:textSize="15sp" />
+            android:layout_gravity="center"
+            android:text="title"
+            android:textColor="#000000"
+            android:textSize="18sp" />
     </FrameLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6px"
+        android:background="@color/line_gray" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.example.android.dialog.picker.LoopView
+                <com.example.dzj.mogemap.dialog.picker.LoopView
                     android:id="@+id/loop_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,5 +76,38 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="#E2E2E2" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_corner_bottom"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        >
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/cancel"
+            android:textColor="@color/text_choose"
+            android:background="@drawable/button_corner"/>
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/submit"
+            android:textColor="@color/text_choose"
+            android:background="@drawable/button_corner"/>
+    </LinearLayout>
 
 </LinearLayout>

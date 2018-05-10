@@ -5,4 +5,9 @@ package com.example.dzj.mogemap.modle;
  */
 
 public class MyLatLng {
+    public double latitude;
+    public double longitude;
+    public double latitudeE6;
+    public double longitudeE6;
+    public MyLatLng(){}
 }

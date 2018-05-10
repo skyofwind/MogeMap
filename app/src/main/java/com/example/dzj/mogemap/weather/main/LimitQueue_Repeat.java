@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main;
+package com.example.dzj.mogemap.weather.main;
 
 import java.util.Collection;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package org.studyplatform.model;
+package com.example.dzj.mogemap.modle;
 
 import java.util.Date;
 
@@ -21,6 +21,8 @@ public class Mogemap_user {
 
     private String headurl;
 
+    private String name;
+
     public Integer getId() {
         return id;
     }
@@ -30,6 +32,9 @@ public class Mogemap_user {
     }
 
     public String getPhone() {
+        if (phone == null){
+            phone = "";
+        }
         return phone;
     }
 
@@ -54,6 +59,9 @@ public class Mogemap_user {
     }
 
     public String getSex() {
+        if(sex == null){
+            return "无";
+        }
         return sex;
     }
 
@@ -62,6 +70,9 @@ public class Mogemap_user {
     }
 
     public Date getBirthday() {
+        if(birthday == null){
+            return null;
+        }
         return birthday;
     }
 
@@ -70,6 +81,9 @@ public class Mogemap_user {
     }
 
     public Integer getHeight() {
+        if(height == null){
+            return 0;
+        }
         return height;
     }
 
@@ -78,6 +92,9 @@ public class Mogemap_user {
     }
 
     public Integer getWeight() {
+        if (weight == null){
+            return 0;
+        }
         return weight;
     }
 
@@ -91,5 +108,13 @@ public class Mogemap_user {
 
     public void setHeadurl(String headurl) {
         this.headurl = headurl == null ? null : headurl.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 }

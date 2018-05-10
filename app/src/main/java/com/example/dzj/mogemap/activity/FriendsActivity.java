@@ -1,16 +1,15 @@
 package com.example.dzj.mogemap.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -30,14 +29,14 @@ import okhttp3.Call;
  * Created by dzj on 2018/2/23.
  */
 
-public class FrendsActivity extends AppCompatActivity {
+public class FriendsActivity extends BaseActivty {
 
     private EditText editText;
     private Button button;
     private ListView listView;
     private FriendsListViewAdapter adapter;
     boolean clcik = false, isLogin = false;
-
+    List<Mogemap_user> userList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class FrendsActivity extends AppCompatActivity {
         if(UserManager.getInstance().getUser().getPhone() != null){
             isLogin = true;
         }
-        initTitle();
+        setMyTitle();
         init();
     }
     @Override
@@ -56,13 +55,23 @@ public class FrendsActivity extends AppCompatActivity {
             getFriends(UserManager.getInstance().getUser().getPhone());
         }
     }
-    private void initTitle(){
-        ImageView icon = (ImageView)findViewById(R.id.icon);
-        TextView title = (TextView)findViewById(R.id.titleText);
-        icon.setImageDrawable(getDrawable(R.drawable.back2));
-        title.setText("我的好友");
-
-        icon.setOnClickListener(new View.OnClickListener() {
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message m ){
+            switch (m.what){
+                case 0x02:
+                    statrProgressDialog();
+                    break;
+                case 0x03:
+                    cancel();
+                    break;
+            }
+        }
+    };
+    private void setMyTitle(){
+        initTitle();
+        setTitle("我的好友");
+        setIconListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -113,7 +122,8 @@ public class FrendsActivity extends AppCompatActivity {
         }
 
     }
-    private void addFriend(String mPhone, String fPhone){
+    private void addFriend(final String mPhone, String fPhone){
+        handler.sendEmptyMessage(0x02);
         OkHttpUtils
                 .get()
                 .url(HttpUtil.ADD_FRIEND+mPhone+"/add/"+fPhone)
@@ -122,6 +132,7 @@ public class FrendsActivity extends AppCompatActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         tip("请求发送失败");
+                        handler.sendEmptyMessage(0x03);
                         Log.d("response:", e.toString() + "  call=" + call.toString() + " id=" + id);
                     }
 
@@ -130,10 +141,12 @@ public class FrendsActivity extends AppCompatActivity {
                         Log.d("response:", response);
                         com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(response);
                         String type = jsonObject.getString("type");
+                        handler.sendEmptyMessage(0x03);
                         if(type.equals("0")){
                             tip("此用户不存在");
                         }else if (type.equals("1")){
                             tip("添加好友成功");
+                            getFriends(mPhone);
                         }else if (type.equals("2")){
                             tip("添加好友失败");
                         }else if (type.equals("3")){
@@ -143,6 +156,7 @@ public class FrendsActivity extends AppCompatActivity {
                 });
     }
     private void getFriends(String phone){
+        handler.sendEmptyMessage(0x02);
         OkHttpUtils
                 .get()
                 .url(HttpUtil.GET_FRIENDS+phone)
@@ -152,21 +166,31 @@ public class FrendsActivity extends AppCompatActivity {
                     public void onError(Call call, Exception e, int id) {
                         //tip("请求发送失败");
                         e.printStackTrace();
+                        handler.sendEmptyMessage(0x03);
                         Log.d("response:", e.toString() + "  call=" + call.toString() + " id=" + id);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Log.d("response:", response);
+                        handler.sendEmptyMessage(0x03);
                         com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(response);
                         String array = jsonObject.getString("friends");
-                        List<Mogemap_user> userList = JSON.parseArray(array, Mogemap_user.class);
+                        userList = JSON.parseArray(array, Mogemap_user.class);
                         System.out.println(userList.size());
-                        adapter = new FriendsListViewAdapter();
+                        adapter = new FriendsListViewAdapter(FriendsActivity.this, userList);
+                        listView.setAdapter(adapter);
                     }
                 });
     }
     private void tip(String s){
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
+    public void deleteItem(int position){
+        if (userList != null){
+            userList.remove(position);
+            adapter = new FriendsListViewAdapter(FriendsActivity.this, userList);
+            listView.setAdapter(adapter);
+        }
     }
 }

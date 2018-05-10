@@ -6,7 +6,7 @@
     >
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dip"
+        android:layout_height="50dip"
         android:background="@drawable/dialog_corner_top">
 
         <TextView
@@ -15,7 +15,7 @@
             android:layout_gravity="center"
             android:text="@string/moving_target"
             android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     </FrameLayout>
     <View
         android:layout_width="match_parent"
@@ -109,22 +109,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
             android:text="@string/cancel"
+            android:textColor="@color/text_choose"
             android:background="@drawable/button_corner"/>
         <Button
             android:id="@+id/submit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
             android:text="@string/submit"
+            android:textColor="@color/text_choose"
             android:background="@drawable/button_corner"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.json_analysis;
+package com.example.dzj.mogemap.weather.json_analysis;
 
 /**
  * Created by dzj on 2016/11/18.

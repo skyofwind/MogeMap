@@ -1,13 +1,12 @@
-package com.example.dzj.theweather.main_menu.adapter;
+package com.example.dzj.mogemap.weather.main_menu.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.dzj.theweather.main_menu.view.MyViewPager;
+import com.example.dzj.mogemap.weather.main_menu.view.MyViewPager;
 
 import java.util.List;
-
 
 
 /**

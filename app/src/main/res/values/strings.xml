@@ -3,16 +3,35 @@
     <string name="shouye">首页</string>
     <string name="weather">天气</string>
     <string name="mine">我的</string>
-
     <string name="moving_target">运动目标</string>
     <string name="cancel">取消</string>
     <string name="submit">确定</string>
     <string name="run_activity_title">开始运动</string>
-
     <string name="run_outdoor">户外跑</string>
     <string name="run_indoor">室内跑</string>
     <string name="walk">步行</string>
     <string name="cycle">骑行</string>
+    <string name="myfriends">我的好友</string>
+    <string name="ranking">排行榜</string>
+    <string name="statistics_week">周跑统计</string>
+    <string name="statistics_month">月跑统计</string>
+    <string name="sign_out">退出登录</string>
+    <string name="defualt_username">选择登陆</string>
+    <string name="phone">请输入手机号</string>
+    <string name="resend">重新发送验证短信</string>
+    <string name="run_finish">本次运动距离过短，将不会记录数据。是否结束？</string>
+    <string name="keep_run">继续运动</string>
+    <string name="finish_run">结束运动</string>
+
+    <string name="timepicker_year">年</string>
+    <string name="timepicker_month">月</string>
+    <string name="timepicker_day">日</string>
+    <string name="timepicker_hour">时</string>
+    <string name="timepicker_min">分</string>
+    <string name="timepicker_title">选择起止时间</string>
+    <string name="timepicker_finish">完成</string>
+    <string name="timepicker_title_default">设置</string>
+
 
     <dimen name="tab_text_size">12sp</dimen>
     <dimen name="run_type_icon_size">40dp</dimen>
@@ -21,4 +40,19 @@
     <dimen name="run_type_icon_margin_top">0dp</dimen>
     <dimen name="run_type_icon_margin_right">0dp</dimen>
     <dimen name="run_type_icon_margin_bottom">0dp</dimen>
+
+    <dimen name="type_layout_one_sise">60dp</dimen>
+    <dimen name="type_layout_two_sise">14dp</dimen>
+    <dimen name="type_layout_three_sise">26dp</dimen>
+
+    <dimen name="login_icon_size">35dp</dimen>
+    <dimen name="deviding_height">5dp</dimen>
+    <dimen name="login_item_text_size">18dp</dimen>
+    <dimen name="mine_manager_top">15dp</dimen>
+    <dimen name="mine_manager_bottom">15dp</dimen>
+    <dimen name="mine_manager_left">20dp</dimen>
+    <dimen name="mine_manager_right">10dp</dimen>
+    <dimen name="right_arrow_size">20dp</dimen>
+
+    <dimen name="phone_layout_margin">56dp</dimen>
 </resources>

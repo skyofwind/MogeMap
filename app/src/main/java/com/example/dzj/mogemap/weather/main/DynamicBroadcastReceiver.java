@@ -1,11 +1,11 @@
-package com.example.dzj.theweather.main;
+package com.example.dzj.mogemap.weather.main;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-public class DynamicBroadcastReceiver extends BroadcastReceiver{
+public class DynamicBroadcastReceiver extends BroadcastReceiver {
 
 	GetLocation getLocation;
 	WindowChange windowChange;

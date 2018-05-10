@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main_menu.bean;
+package com.example.dzj.mogemap.weather.main_menu.bean;
 
 import java.io.Serializable;
 

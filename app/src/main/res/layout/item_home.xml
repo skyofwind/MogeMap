@@ -6,61 +6,72 @@
     android:orientation="vertical"
     android:padding="0dp"
     >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-                <TextView
-                    android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/time"
-                    android:textColor="#ffffff"
-                    />
+                    android:orientation="horizontal"
+                    >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/time"
+                            android:textColor="#ffffff"
+                            />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal|center"
+                    android:paddingTop="20dp"
+                    >
+                        <ImageView
+                            android:id="@+id/icon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            />
+                        <TextView
+                            android:id="@+id/weather_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#ffffff"
+                            />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal|center"
+                    >
+                        <TextView
+                            android:id="@+id/tmp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#ffffff"
+                            />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal|center"
+                    >
+                        <TextView
+                            android:id="@+id/wind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="#ffffff"
+                            />
+                </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal|center"
-            android:paddingTop="30dp"
-            >
-                <ImageView
-                    android:id="@+id/icon"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    />
-                <TextView
-                    android:id="@+id/weather_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ffffff"
-                    />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal|center"
-            android:paddingBottom="25dp">
-                <TextView
-                    android:id="@+id/tmp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ffffff"
-                    />
-                <TextView
-                    android:id="@+id/wind"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
-                    />
-        </LinearLayout>
-
 
 </LinearLayout>

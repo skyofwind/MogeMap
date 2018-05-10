@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-</selector>
+<!-- 用于设置信息对话框的圆角 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:angle="270"
+                android:centerColor="#88000000"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:endColor="#dd000000"
+                android:startColor="#66000000"
+                android:type="linear" />
+        </shape>
+    </item>
+</layer-list>

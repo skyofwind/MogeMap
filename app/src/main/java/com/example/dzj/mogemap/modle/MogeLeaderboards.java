@@ -1,4 +1,4 @@
-package org.studyplatform.model;
+package com.example.dzj.mogemap.modle;
 
 import java.util.List;
 

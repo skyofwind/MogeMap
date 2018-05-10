@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.recylerview;
+package com.example.dzj.mogemap.weather.recylerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.dzj.theweather.R;
+import com.example.dzj.mogemap.R;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 
 public class hRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener,TextView.OnEditorActionListener{
-    private List<String>history_city;
+    private List<String> history_city;
     private LayoutInflater mInflater;
     private Context context;
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
@@ -45,10 +45,10 @@ public class hRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         void onItemClick(View view, int tag);
     }
     public interface  SaveEditListener{
-        void SaveEdit(int position,String string);
+        void SaveEdit(int position, String string);
     }
     public interface EditKeyListener{
-        boolean onEditorAction(TextView v,int actionId, KeyEvent event);
+        boolean onEditorAction(TextView v, int actionId, KeyEvent event);
     }
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener){
         this.mOnItemClickListener = listener;
@@ -119,7 +119,7 @@ public class hRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             seacher_bt=(Button)itemView.findViewById(R.id.seacher_bt);
         }
     }
-    class TextSwitcher implements TextWatcher{
+    class TextSwitcher implements TextWatcher {
 
         private Item2ViewHolder mHolder;
 

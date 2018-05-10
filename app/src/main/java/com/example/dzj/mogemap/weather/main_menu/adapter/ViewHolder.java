@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main_menu.adapter;
+package com.example.dzj.mogemap.weather.main_menu.adapter;
 
 import android.util.SparseArray;
 import android.view.View;

@@ -1,11 +1,11 @@
-package com.example.dzj.theweather.main_menu;
+package com.example.dzj.mogemap.weather.main_menu;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.dzj.theweather.R;
+import com.example.dzj.mogemap.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.example.dzj.theweather.main.DataDeal.DB_PATH;
+import static com.example.dzj.mogemap.weather.main.DataDeal.DB_PATH;
+
 
 /**
  * Created by dzj on 2016/12/1.

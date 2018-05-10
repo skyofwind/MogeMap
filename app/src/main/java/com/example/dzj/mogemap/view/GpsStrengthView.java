@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -104,7 +105,7 @@ public class GpsStrengthView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(1f);
-        paint.setColor(context.getColor(R.color.yellow_shit));
+        paint.setColor(getColor(strength));
         float offsetLeft = pl+(columnWidth+columnInterval)*position;
         float height = columHeight*(position+1);
         RectF rectF = new RectF((float) (offsetLeft), (float)(pt+heights-height-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+heights-height+columnWidth/2));
@@ -124,7 +125,7 @@ public class GpsStrengthView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         //paint.setStrokeWidth(1f);
-        paint.setColor(context.getColor(R.color.text_gray));
+        paint.setColor(getMyColor(R.color.text_gray));
         float offsetLeft = pl+(columnWidth+columnInterval)*position;
         float height = columHeight*(position+1);
         RectF rectF = new RectF((float) (offsetLeft), (float)(pt+heights-height-columnWidth/2), (float)(offsetLeft+columnWidth), (float) (pt+heights-height+columnWidth/2));
@@ -141,11 +142,30 @@ public class GpsStrengthView extends View {
     private void log(String str){
         Log.i(TAG,str);
     }
-    private int getColor(int id){
-        return context.getColor(id);
+    private int getColor(int strength){
+        int id = -1;
+        switch (strength){
+            case 1:
+                id = getMyColor(R.color.red);
+                break;
+            case 2:
+                id = getMyColor(R.color.yellow_shit);
+                break;
+            case 3:
+                id = getMyColor(R.color.green);
+                break;
+        }
+        return id;
     }
     public void setStrength(int strength){
         this.strength = strength;
         invalidate();
+    }
+    private int getMyColor(int id){
+        if(Build.VERSION.SDK_INT >= 23){
+            return context.getColor(id);
+        }else {
+            return context.getResources().getColor(id);
+        }
     }
 }

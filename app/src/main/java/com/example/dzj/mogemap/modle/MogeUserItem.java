@@ -1,4 +1,4 @@
-package org.studyplatform.model;
+package com.example.dzj.mogemap.modle;
 
 public class MogeUserItem implements Comparable<MogeUserItem> {
     private int id;

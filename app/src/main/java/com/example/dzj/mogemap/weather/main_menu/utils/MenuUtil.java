@@ -1,10 +1,10 @@
-package com.example.dzj.theweather.main_menu.utils;
+package com.example.dzj.mogemap.weather.main_menu.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 
-import com.example.dzj.theweather.main_menu.DBmanager;
-import com.example.dzj.theweather.main_menu.bean.MenuData;
+import com.example.dzj.mogemap.weather.main_menu.DBmanager;
+import com.example.dzj.mogemap.weather.main_menu.bean.MenuData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.example.dzj.theweather.main.WeatherActivity.cursor;
-import static com.example.dzj.theweather.main.WeatherActivity.dbHelper;
+import static com.example.dzj.mogemap.weather.main.WeatherActivity.cursor;
+import static com.example.dzj.mogemap.weather.main.WeatherActivity.dbHelper;
 
 
 /**

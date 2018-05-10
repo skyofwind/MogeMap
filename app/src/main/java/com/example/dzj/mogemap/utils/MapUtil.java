@@ -95,7 +95,7 @@ public class MapUtil {
         List<LatLng> polylines = new ArrayList<>();
         polylines.add(start);
         polylines.add(end);
-        PolylineOptions polylineOptions = new PolylineOptions().points(polylines).width(12).color(Color.RED);
+        PolylineOptions polylineOptions = new PolylineOptions().points(polylines).width(11).color(Color.RED);
         baiduMap.addOverlay(polylineOptions);
     }
     public void drawRuningLine(List<LatLng> points){

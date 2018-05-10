@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.mob.sdk'
 repositories {
     flatDir {
         dir 'libs'
@@ -7,23 +7,37 @@ repositories {
 }
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.example.dzj.mogemap"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    android.applicationVariants.all {
+        variant -> variant.outputs.all {
+            outputFileName = "MogeMap-${variant.versionName}.apk"
+        }
+    }
     lintOptions {
+        checkReleaseBuilds false
         abortOnError false
+    }
+    aaptOptions {
+
+        cruncherEnabled = false
+
+        useNewCruncher = false
+
     }
     sourceSets {
         main {
@@ -31,7 +45,7 @@ android {
         }
 
         // Move the tests to tests/java, tests/res, etc...
-        instrumentTest.setRoot('tests')
+        androidTest.setRoot('tests')
 
         // Move the build types to build-types/<type>
         // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
@@ -43,15 +57,58 @@ android {
         release.setRoot('build-types/release')
     }
 }
+MobSDK {
+    appKey "2448bfac7b672"
+    appSecret "1eebba8901a4982d4b170a5e8dc9cd1f"
 
+    SMSSDK {}
+    ShareSDK {
+        //平台配置信息
+        devInfo {
+            SinaWeibo {
+                appKey "1377089895"
+                appSecret "fd77d8d12b2a3ea5bd9b132da2650713"
+                callbackUri "http://www.sharesdk.cn"
+                shareByAppClient true
+                enable true
+            }
+            Wechat {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                bypassApproval true
+                enable true
+            }
+            WechatMoments {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                bypassApproval true
+                enable true
+            }
+            QQ {
+                appId "1106663555"
+                appKey "1bXMTT53abDHtE7d"
+                enable true
+            }
+            QZone {
+                appId "1106663555"
+                appKey "1bXMTT53abDHtE7d"
+                enable true
+            }
+        }
+    }
+}
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.code.gson:gson:2.3.1'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:cardview-v7:25.3.1'
+    implementation 'com.android.support:recyclerview-v7:25.3.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.google.code.gson:gson:2.3.1'
+    implementation 'com.sina.weibo.sdk:core:4.1.4:openDefaultRelease@aar'
+    implementation 'com.alibaba:fastjson:1.1.56.android'
+    implementation 'com.zhy:okhttputils:2.6.2'
+    testImplementation 'junit:junit:4.12'
 }

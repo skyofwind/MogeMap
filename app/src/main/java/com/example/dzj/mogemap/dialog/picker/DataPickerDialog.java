@@ -1,4 +1,4 @@
-package com.example.android.dialog.picker;
+package com.example.dzj.mogemap.dialog.picker;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
@@ -12,7 +12,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.example.android.dialog.R;
+import com.example.dzj.mogemap.R;
+import com.example.dzj.mogemap.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class DataPickerDialog extends Dialog {
         private LoopView loopData;
         private String title;
         private String unit;
+        private String myWeight;
         private int initSelection;
         private OnDataSelectedListener callback;
         private final List<String> dataList = new ArrayList<>();
@@ -65,7 +67,10 @@ public class DataPickerDialog extends Dialog {
             this.context = context;
             params = new DataPickerDialog.Params();
         }
-
+        public Builder setMyWeight(String weight){
+            params.myWeight = weight;
+            return this;
+        }
         private final String getCurrDateValue() {
             return params.loopData.getCurrentItemValue();
         }
@@ -102,7 +107,7 @@ public class DataPickerDialog extends Dialog {
             final DataPickerDialog dialog = new DataPickerDialog(context, params.shadow ? R.style.Theme_Light_NoTitle_Dialog : R.style.Theme_Light_NoTitle_NoShadow_Dialog);
             View view = LayoutInflater.from(context).inflate(R.layout.layout_picker_data, null);
             if (!TextUtils.isEmpty(params.title)) {
-                TextView txTitle = (TextView) view.findViewById(R.id.tx_title);
+                TextView txTitle = (TextView) view.findViewById(R.id.title);
                 txTitle.setText(params.title);
             }
             if (!TextUtils.isEmpty(params.unit)) {
@@ -112,21 +117,39 @@ public class DataPickerDialog extends Dialog {
 
             final LoopView loopData = (LoopView) view.findViewById(R.id.loop_data);
             loopData.setArrayList(params.dataList);
-            loopData.setNotLoop();
-            if (params.dataList.size() > 0) loopData.setCurrentItem(params.initSelection);
-            view.findViewById(R.id.tx_finish).setOnClickListener(new View.OnClickListener() {
+            //loopData.setNotLoop();
+            if (params.dataList.size() > 0){
+                if(params.myWeight != null){
+                    for (int i = 0; i < params.dataList.size(); i++){
+                        if (params.myWeight.equals(params.dataList.get(i))){
+                            loopData.setCurrentItem(i);
+                            break;
+                        }
+                    }
+                }else {
+                    loopData.setCurrentItem(params.initSelection);
+                }
+            }
+            view.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
                     params.callback.onDataSelected(getCurrDateValue());
                 }
             });
+            view.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
             Window win = dialog.getWindow();
             win.getDecorView().setPadding(0, 0, 0, 0);
             WindowManager.LayoutParams lp = win.getAttributes();
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.width = SystemUtils.MAX_WIDTH-50;
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.y = 30;
             win.setAttributes(lp);
             win.setGravity(Gravity.BOTTOM);
             win.setWindowAnimations(R.style.Animation_Bottom_Rising);

@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main_menu;
+package com.example.dzj.mogemap.weather.main_menu;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,18 +9,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.dzj.theweather.R;
-import com.example.dzj.theweather.main_menu.adapter.MenuDialogAdapter;
-import com.example.dzj.theweather.main_menu.adapter.MyPagerAdapter;
-import com.example.dzj.theweather.main_menu.bean.MenuData;
-import com.example.dzj.theweather.main_menu.utils.MenuDataManager;
-import com.example.dzj.theweather.main_menu.view.MyViewPager;
+import com.example.dzj.mogemap.R;
+import com.example.dzj.mogemap.weather.main_menu.adapter.MenuDialogAdapter;
+import com.example.dzj.mogemap.weather.main_menu.adapter.MyPagerAdapter;
+import com.example.dzj.mogemap.weather.main_menu.bean.MenuData;
+import com.example.dzj.mogemap.weather.main_menu.utils.MenuDataManager;
+import com.example.dzj.mogemap.weather.main_menu.view.MyViewPager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mainmenu extends Activity {
+
+
+public class MainmenuActivity extends Activity {
 
     private Context mContext;
     public MenuDataManager menuDataManager = MenuDataManager.getInstance();//获得txt文档数据

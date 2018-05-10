@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:id="@+id/root">
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
         android:layout_width="match_parent"
@@ -18,6 +20,7 @@
             android:layout_height="wrap_content"
             />
         <LinearLayout
+            android:id="@+id/type_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
@@ -130,16 +133,17 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/linearlayout_center"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:background="#55ffffff">
+            android:background="#66ffffff">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="20dp">
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -160,12 +164,14 @@
                         android:layout_marginRight="5dp"
                         />
                     <TextView
+                        android:id="@+id/searchTip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="正在搜索..."
                         android:textSize="@dimen/tab_text_size"
                         android:layout_gravity="center_vertical"
-                        android:visibility="gone"/>
+                        android:visibility="gone"
+                        />
                     <com.example.dzj.mogemap.view.GpsStrengthView
                         android:id="@+id/gpsStrength"
                         android:layout_width="15dp"
@@ -175,89 +181,79 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/linearlayout_center_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center_horizontal">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/type_target"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="center">
                         <TextView
+                            android:id="@+id/typeItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="时间目标"
+                            android:text="不设目标"
                             android:layout_gravity="center"
+                            android:textSize="16sp"
                             android:textColor="@color/black"/>
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
                             android:src="@drawable/forward"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_marginTop="15dp"
                         android:layout_gravity="center">
                         <TextView
+                            android:id="@+id/itemValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="500"
+                            android:text="基本跑步"
                             android:textColor="@color/black"
-                            android:textSize="60sp"/>
+                            android:textSize="40sp"/>
                         <TextView
+                            android:id="@+id/itemUnit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
-                            android:text="分钟"
+                            android:text=""
                             />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:background="@drawable/translucent_bg_over">
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:id="@+id/start"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:src="@drawable/play"/>
         </LinearLayout>
     </LinearLayout>
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_marginTop="80dip"-->
-        <!--android:background="#D000"-->
-        <!--android:minWidth="100dip"-->
-        <!--android:orientation="vertical"-->
-        <!--android:padding="2dp" >-->
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="#ffffff"-->
-            <!--android:id="@+id/tip"/>-->
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="#ffffff"-->
-            <!--android:id="@+id/count"/>-->
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="#ffffff"-->
-            <!--android:id="@+id/latlng"/>-->
-    <!--</LinearLayout>-->
 
 </RelativeLayout>

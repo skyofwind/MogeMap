@@ -1,23 +1,26 @@
-package com.example.dzj.theweather.main;
+package com.example.dzj.mogemap.weather.main;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
-import com.example.dzj.theweather.R;
-import com.example.dzj.theweather.main_menu.DB_code;
+import com.example.dzj.mogemap.R;
+import com.example.dzj.mogemap.fragment.WeatherManagerFragment;
+import com.example.dzj.mogemap.utils.SystemUtils;
+import com.example.dzj.mogemap.weather.json_analysis.Aqi;
+import com.example.dzj.mogemap.weather.json_analysis.City;
+import com.example.dzj.mogemap.weather.json_analysis.Cond;
+import com.example.dzj.mogemap.weather.json_analysis.DailyForecast;
+import com.example.dzj.mogemap.weather.json_analysis.Flu;
+import com.example.dzj.mogemap.weather.json_analysis.HEWeather5;
+import com.example.dzj.mogemap.weather.json_analysis.Now;
+import com.example.dzj.mogemap.weather.json_analysis.Suggestion;
+import com.example.dzj.mogemap.weather.json_analysis.Tmp;
+import com.example.dzj.mogemap.weather.json_analysis.Trav;
+import com.example.dzj.mogemap.weather.json_analysis.Wind;
+import com.example.dzj.mogemap.weather.json_analysis.tCond;
+import com.example.dzj.mogemap.weather.main_menu.DB_code;
 import com.google.gson.Gson;
-import com.example.dzj.theweather.json_analysis.Aqi;
-import com.example.dzj.theweather.json_analysis.City;
-import com.example.dzj.theweather.json_analysis.Cond;
-import com.example.dzj.theweather.json_analysis.DailyForecast;
-import com.example.dzj.theweather.json_analysis.Flu;
-import com.example.dzj.theweather.json_analysis.HEWeather5;
-import com.example.dzj.theweather.json_analysis.Now;
-import com.example.dzj.theweather.json_analysis.Suggestion;
-import com.example.dzj.theweather.json_analysis.Tmp;
-import com.example.dzj.theweather.json_analysis.Trav;
-import com.example.dzj.theweather.json_analysis.Wind;
-import com.example.dzj.theweather.json_analysis.tCond;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ import java.util.List;
 
 public class DataDeal {
 
-    public static final String PACKAGE_NAME2 = "com.example.dzj.theweather";
+    public static final String PACKAGE_NAME2 = "com.example.dzj.mogemap";
     public static final String DB_PATH = "/data"
             + Environment.getDataDirectory().getAbsolutePath() + "/"
             + PACKAGE_NAME2;  //在手机里存放数据库的位置
@@ -69,12 +72,33 @@ public class DataDeal {
         bgpic=new ArrayList<>();
         bg_min=new ArrayList<>();
         tcolor=new ArrayList<>();
-        height.add(1500);
+        //height.add(1500);
+    }
+    public static void logData(){
+        logList(mtime, "mtime");
+        logList(mtmp, "mtmp");
+        logList(micon, "micon");
+        logList(mwind, "mwind");
+        logList(mtxt, "mtxt");
+        logList(ncity, "ncity");
+        logList(ntmp, "ntmp");
+        logList(height, "height");
+        logList(naqi, "naqi");
+        logList(ntrav, "ntrav");
+        logList(nflu, "nflu");
+        logList(bgpic, "bgpic");
+        logList(bg_min, "bgpic");
+        logList(bgpic, "tcolor");
+    }
+    public static void logList(List list, String tag){
+        for (int i = 0; i < list.size();i++){
+            Log.d(tag,"list("+i+")="+list.get(i).toString());
+        }
     }
     //json数据处理和数组赋值
-    public static void Json_deal(String json, Gson mg, String temp, int Hour){
-        HEWeather5 hw=mg.fromJson(json,HEWeather5.class);
-
+    public static void Json_deal(String json, String temp, int Hour){
+        HEWeather5 hw = new Gson().fromJson(json,HEWeather5.class);
+        DataDeal.height.add(SystemUtils.HEIGHT);
             if(hw.getSuggestion()!=null){
                 Suggestion suggestion=hw.getSuggestion();
                 Trav trav=suggestion.getTrav();
@@ -104,6 +128,7 @@ public class DataDeal {
             ntmp.add(now.getTmp()+"°");
             List<DailyForecast> list=hw.getForecast();
             if(list!=null){
+                Log.d("DailyForecast", "DailyForecast不为空");
                 int size= list.size();
                 if(size>0){
                     for(int i=0;i<size;i++){
@@ -134,8 +159,9 @@ public class DataDeal {
                         Tmp tmp=list.get(i).getTmp();
                         mtmp.add(tmp.getMin()+"~"+tmp.getMax()+"°C");
                         Wind wind=list.get(i).getWind();
+                        Log.d("wind", wind.getDir());
                         if(wind.getDir().equals("无持续风向")){
-                            mwind.add(wind.getSc());
+                            mwind.add(wind.getDir()+wind.getSc()+"级");
                         }else{
                             if(wind.getSc().equals("微风")){
                                 mwind.add(wind.getDir()+wind.getSc());
@@ -148,7 +174,9 @@ public class DataDeal {
 
                 }
 
-        }
+            }else {
+                Log.d("DailyForecast", "DailyForecast为空");
+            }
     }
     //判断天气对应图标
     public static void getImgByWeather_day(String weather){
@@ -695,23 +723,23 @@ public class DataDeal {
         return str;
     }
     //匹配城市名的城市代码
-    public static String cnCode(Context contexts,LocationInfo info){
+    public static String cnCode(Context contexts, LocationInfo info){
         String code="",province,district;
-        WeatherActivity.dbcode=new DB_code(contexts);
-        WeatherActivity.dbcode.openDatabase();
-        WeatherActivity.cursor= WeatherActivity.dbcode.Query();
-        if(WeatherActivity.cursor.moveToNext()){
+        WeatherManagerFragment.dbcode=new DB_code(contexts);
+        WeatherManagerFragment.dbcode.openDatabase();
+        WeatherManagerFragment.cursor= WeatherManagerFragment.dbcode.Query();
+        if(WeatherManagerFragment.cursor.moveToNext()){
             do {
-                district= WeatherActivity.cursor.getString(WeatherActivity.cursor.getColumnIndex("district"));
-                province= WeatherActivity.cursor.getString(WeatherActivity.cursor.getColumnIndex("province"));
+                district= WeatherManagerFragment.cursor.getString(WeatherManagerFragment.cursor.getColumnIndex("district"));
+                province= WeatherManagerFragment.cursor.getString(WeatherManagerFragment.cursor.getColumnIndex("province"));
                 if(info.getProvince().equals(province)&&info.getDistrict().equals(district)){
-                    code= WeatherActivity.cursor.getString(WeatherActivity.cursor.getColumnIndex("city_id"));
+                    code= WeatherManagerFragment.cursor.getString(WeatherManagerFragment.cursor.getColumnIndex("city_id"));
                     break;
                 }
-            }while (WeatherActivity.cursor.moveToNext());
+            }while (WeatherManagerFragment.cursor.moveToNext());
         }
-        WeatherActivity.cursor.close();
-        WeatherActivity.dbcode.closeDatabase();
+        WeatherManagerFragment.cursor.close();
+        WeatherManagerFragment.dbcode.closeDatabase();
         return  code;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main;
+package com.example.dzj.mogemap.weather.main;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -33,38 +33,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.dzj.theweather.R;
-import com.example.dzj.theweather.getui.IntentService;
-import com.example.dzj.theweather.getui.PushService;
-import com.example.dzj.theweather.json_analysis.City_basic;
-import com.example.dzj.theweather.json_analysis.WeatherResult;
-import com.example.dzj.theweather.main_menu.DB_code;
-import com.example.dzj.theweather.main_menu.DBmanager;
-import com.example.dzj.theweather.main_menu.Mainmenu;
-import com.example.dzj.theweather.main_menu.bean.MenuData;
-import com.example.dzj.theweather.recylerview.DividerItemDecoration;
-import com.example.dzj.theweather.recylerview.RecyclerViewAdapter;
-import com.example.dzj.theweather.recylerview.hRecyclerViewAdapter;
-import com.example.dzj.theweather.slide_menu.MenuItemAdapter;
-import com.example.dzj.theweather.voice.Voice;
-import com.example.dzj.theweather.weather_view.DynamicWeatherView;
-import com.example.dzj.theweather.weather_view.RainTypeImpl;
-import com.example.dzj.theweather.weather_view.SnowTypeImpl;
-import com.google.gson.Gson;
-import com.igexin.sdk.PushManager;
-
-import net.sf.json.JSONObject;
+import com.example.dzj.mogemap.R;
+import com.example.dzj.mogemap.weather.main_menu.DB_code;
+import com.example.dzj.mogemap.weather.main_menu.DBmanager;
+import com.example.dzj.mogemap.weather.main_menu.MainmenuActivity;
+import com.example.dzj.mogemap.weather.main_menu.bean.MenuData;
+import com.example.dzj.mogemap.weather.recylerview.DividerItemDecoration;
+import com.example.dzj.mogemap.weather.recylerview.RecyclerViewAdapter;
+import com.example.dzj.mogemap.weather.recylerview.hRecyclerViewAdapter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -72,18 +54,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import cn.sharesdk.onekeyshare.OnekeyShare;
+import static com.example.dzj.mogemap.weather.main.DataDeal.bgpic;
+import static com.example.dzj.mogemap.weather.main.DataDeal.mtmp;
+import static com.example.dzj.mogemap.weather.main.DataDeal.mtxt;
+import static com.example.dzj.mogemap.weather.main.DataDeal.mwind;
+import static com.example.dzj.mogemap.weather.main.DataDeal.naqi;
+import static com.example.dzj.mogemap.weather.main.DataDeal.ncity;
+import static com.example.dzj.mogemap.weather.main.DataDeal.ntmp;
+import static com.example.dzj.mogemap.weather.main.DataDeal.wc1;
+import static com.example.dzj.mogemap.weather.main.DataDeal.wc2;
 
-import static com.example.dzj.theweather.main.DataDeal.bgpic;
-import static com.example.dzj.theweather.main.DataDeal.mtmp;
-import static com.example.dzj.theweather.main.DataDeal.mtxt;
-import static com.example.dzj.theweather.main.DataDeal.mwind;
-import static com.example.dzj.theweather.main.DataDeal.naqi;
-import static com.example.dzj.theweather.main.DataDeal.ncity;
-import static com.example.dzj.theweather.main.DataDeal.ntmp;
-import static com.example.dzj.theweather.main.DataDeal.wc1;
-import static com.example.dzj.theweather.main.DataDeal.wc2;
-import static com.example.dzj.theweather.voice.Voice.play;
 
 /**
  * Created by dzj on 2017/5/22.
@@ -149,7 +129,7 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    private DynamicWeatherView mDynamicWeatherView;
+    //private DynamicWeatherView mDynamicWeatherView;
 
     private RelativeLayout relativeLayout;
 
@@ -177,7 +157,7 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case  0x10:
-                        startActivityForResult(new Intent(WeatherActivity.this,Mainmenu.class),REQUEST_CODE);
+                        startActivityForResult(new Intent(WeatherActivity.this,MainmenuActivity.class),REQUEST_CODE);
                         break;
                     case 0x12:
                         //stopTimer();
@@ -216,9 +196,9 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
         if(mLocation!=null&&mLocation.isLocationStart()){
             mLocation.Stop();
         }
-        if(play){
-            Voice.stopMusic();
-        }
+//        if(play){
+//            Voice.stopMusic();
+//        }
     }
     @Override
     protected void onResume(){
@@ -239,9 +219,9 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
     @Override
     protected void onStop(){
         super.onStop();
-        if(play){
-            Voice.stopMusic();
-        }
+//        if(play){
+//            Voice.stopMusic();
+//        }
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("voice", DataDeal.mvoice);
@@ -278,7 +258,7 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
             reflash();
             setMyAdapter();
             control=true;
-            if(DataDeal.mtxt.size()>0){
+            if(mtxt.size()>0){
                 sendWindowChange();
             }
         }else{
@@ -309,7 +289,7 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
             broadcastReceiver.setWindowChange(new DynamicBroadcastReceiver.WindowChange() {
                 @Override
                 public void onChange() {
-                    if(DataDeal.mtxt.size()>0){
+                    if(mtxt.size()>0){
                         sendMessage(0x17);
                         //Log.i("mtxt",DataDeal.mtxt.get(0));
                     }
@@ -379,15 +359,15 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
     }
 
     public void statr_weather(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         //toolbar.setNavigationIcon(R.mipmap.icon2);
-        toolbar.setOnMenuItemClickListener(onMenuItemClick);
+        //toolbar.setOnMenuItemClickListener(onMenuItemClick);
         //
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mLvLeftMenu=(ListView)findViewById(R.id.left_slide_menu);
+        //drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //mLvLeftMenu=(ListView)findViewById(R.id.left_slide_menu);
         ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.mipmap.icon2);
+        //ab.setHomeAsUpIndicator(R.mipmap.icon2);
         ab.setDisplayHomeAsUpEnabled(true);
 
         setUpDrawer();
@@ -429,11 +409,11 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
     public void startRecycleyvie(){
         //调用RecyclerView初始化
         mRecyclerView=(RecyclerView)findViewById(R.id.id_recyclerview);
-        mAdapter=new RecyclerViewAdapter(this, DataDeal.mtime, DataDeal.mtmp, DataDeal.micon, DataDeal.mwind, DataDeal.mtxt, DataDeal.ntmp, ncity, DataDeal.height, DataDeal.naqi, DataDeal.ntrav, DataDeal.nflu, bgpic, DataDeal.bg_min, DataDeal.tcolor);
+        mAdapter=new RecyclerViewAdapter(this, DataDeal.mtime, mtmp, DataDeal.micon, mwind, mtxt, ntmp, ncity, DataDeal.height, naqi, DataDeal.ntrav, DataDeal.nflu, bgpic, DataDeal.bg_min, DataDeal.tcolor);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new RecyclerViewAdapter.OnRecyclerViewItemClickListener() {
             @Override
@@ -493,13 +473,13 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
         try{
             mRecyclerView.removeAllViews();
             DataDeal.mtime.clear();
-            DataDeal.mtmp.clear();
+            mtmp.clear();
             DataDeal.micon.clear();
-            DataDeal.mwind.clear();
-            DataDeal.mtxt.clear();
+            mwind.clear();
+            mtxt.clear();
             ncity.clear();
-            DataDeal.ntmp.clear();
-            DataDeal.naqi.clear();
+            ntmp.clear();
+            naqi.clear();
             DataDeal.ntrav.clear();
             DataDeal.nflu.clear();
             bgpic.clear();
@@ -582,7 +562,7 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
     //右上角菜单查询中国省市天气
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        //getMenuInflater().inflate(R.menu.menu_main,menu);
         return super.onCreateOptionsMenu(menu);
     }
     @Override
@@ -606,14 +586,14 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
     private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.action_edit:
-                    sendMessage(0x10);
-                    break;
-                case R.id.action_shared:
-                    showShare();
-                    break;
-            }
+//            switch (menuItem.getItemId()) {
+//                case R.id.action_edit:
+//                    sendMessage(0x10);
+//                    break;
+//                case R.id.action_shared:
+//                    showShare();
+//                    break;
+//            }
             return true;
         }
     };
@@ -673,16 +653,16 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
     //断网处理
     public void Error(){
         sendMessage(0x13);
-        setContentView(R.layout.reflash);
-        Button bt=(Button)findViewById(R.id.connect);
-        TextView tv=(TextView)findViewById(R.id.sug);
-        tv.setText(minfo.getStatus());
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage(0x15);
-            }
-        });
+        //setContentView(R.layout.reflash);
+        //Button bt=(Button)findViewById(R.id.connect);
+        //TextView tv=(TextView)findViewById(R.id.sug);
+        //tv.setText(minfo.getStatus());
+//        bt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendMessage(0x15);
+//            }
+//        });
     }
     public void Reflash(){
         statrProgressDialog();
@@ -702,7 +682,7 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
     }
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -744,8 +724,8 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
     private void setUpDrawer()
     {
         LayoutInflater inflater = LayoutInflater.from(this);
-        mLvLeftMenu.addHeaderView(inflater.inflate(R.layout.nav_header_main, mLvLeftMenu, false));
-        mLvLeftMenu.setAdapter(new MenuItemAdapter(this));
+        //mLvLeftMenu.addHeaderView(inflater.inflate(R.layout.nav_header_main, mLvLeftMenu, false));
+        //mLvLeftMenu.setAdapter(new MenuItemAdapter(this));
     }
     //popupwindow相应函数
     public void initRecyclerview(){
@@ -764,7 +744,7 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
                     if(edit_text!=null&&!edit_text.equals("")){
                         SearchCity(edit_text);
                     }else{
-                        Toast.makeText(WeatherActivity.this,"请输入城市名后再搜索",Toast.LENGTH_LONG).show();
+                        Toast.makeText(WeatherActivity.this,"请输入城市名后再搜索", Toast.LENGTH_LONG).show();
                     }
 
                 }else{
@@ -808,7 +788,7 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
         });
     }
     public int getHour(){
-        Calendar mCalendar=Calendar.getInstance();
+        Calendar mCalendar= Calendar.getInstance();
         mCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         int Hour=mCalendar.get(Calendar.HOUR_OF_DAY);
         return  Hour;
@@ -831,118 +811,118 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
 
         Log.i("长度：",queue_city_name.queue+"    "+queue_city_id.queue);
         setHistory_list();
-        JsonObjectRequest request = new JsonObjectRequest( DataDeal.url+str2+ DataDeal.password, null,
-                new Response.Listener<org.json.JSONObject>() {
-                    @Override
-                    public void onResponse(org.json.JSONObject jsonObject) {//jsonObject为请求返回的Json格式数据
-                        //Toast.makeText(MainActivity.this,jsonObject.toString(),Toast.LENGTH_LONG).show();
-                        DataDeal.rjson=jsonObject.toString();
-                        System.out.println(DataDeal.rjson);
-                        Gson mg=new Gson();
-                        JSONObject jb = JSONObject.fromObject(DataDeal.rjson);
-                        String json1=jb.getString("result");
-                        JSONObject jsonObject1=JSONObject.fromObject(json1);
-                        //System.out.println(json1);
-                        String json2=jsonObject1.getString("HeWeather5");
-                        String json3=json2.substring(1,json2.length()-1);
-                        System.out.println(json3);
-                        WeatherResult wr=mg.fromJson(DataDeal.rjson,WeatherResult.class);
-                        if(wr.getMsg().equals("查询成功")){
-                            System.out.println("查询成功");
-                            //dataDelete();
-                            try{
-                                //System.out.println(json3);
-                                DataDeal.Json_deal(json3,mg,str1,getHour());
-                                setMyAdapter();
-                                if(control){
-                                    wc2=true;
-                                }
-                                sendMessage(0x18);
-                                sendMessage(0x13);
-                            }catch (Exception e){
-                                minfo.setStatus("返回信息有误，请稍候重试。");
-                                sendMessage(0x13);
-                                sendMessage(0x14);
-                            }
-                        }else{
-                            minfo.setStatus("服务器繁忙，请稍候重试。");
-                            sendMessage(0x13);
-                            sendMessage(0x14);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //Toast.makeText(MainActivity.this,volleyError.toString(),Toast.LENGTH_LONG).show();
-                        minfo.setStatus("网络出错，请稍后再试。");
-                        sendMessage(0x13);
-                        sendMessage(0x14);
-                    }
-                });
-
-        //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
-        request.setTag("getWeather");
-        //设置超时时间
-        request.setRetryPolicy(new DefaultRetryPolicy(50000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        //将请求加入全局队列中
-        MyApplication.getHttpQueues().add(request);
+//        JsonObjectRequest request = new JsonObjectRequest( DataDeal.url+str2+ DataDeal.password, null,
+//                new Response.Listener<org.json.JSONObject>() {
+//                    @Override
+//                    public void onResponse(org.json.JSONObject jsonObject) {//jsonObject为请求返回的Json格式数据
+//                        //Toast.makeText(MainActivity.this,jsonObject.toString(),Toast.LENGTH_LONG).show();
+//                        DataDeal.rjson=jsonObject.toString();
+//                        System.out.println(DataDeal.rjson);
+//                        Gson mg=new Gson();
+//                        JSONObject jb = JSONObject.fromObject(DataDeal.rjson);
+//                        String json1=jb.getString("result");
+//                        JSONObject jsonObject1=JSONObject.fromObject(json1);
+//                        //System.out.println(json1);
+//                        String json2=jsonObject1.getString("HeWeather5");
+//                        String json3=json2.substring(1,json2.length()-1);
+//                        System.out.println(json3);
+//                        WeatherResult wr=mg.fromJson(DataDeal.rjson,WeatherResult.class);
+//                        if(wr.getMsg().equals("查询成功")){
+//                            System.out.println("查询成功");
+//                            //dataDelete();
+//                            try{
+//                                //System.out.println(json3);
+//                                DataDeal.Json_deal(json3,mg,str1,getHour());
+//                                setMyAdapter();
+//                                if(control){
+//                                    wc2=true;
+//                                }
+//                                sendMessage(0x18);
+//                                sendMessage(0x13);
+//                            }catch (Exception e){
+//                                minfo.setStatus("返回信息有误，请稍候重试。");
+//                                sendMessage(0x13);
+//                                sendMessage(0x14);
+//                            }
+//                        }else{
+//                            minfo.setStatus("服务器繁忙，请稍候重试。");
+//                            sendMessage(0x13);
+//                            sendMessage(0x14);
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError volleyError) {
+//                        //Toast.makeText(MainActivity.this,volleyError.toString(),Toast.LENGTH_LONG).show();
+//                        minfo.setStatus("网络出错，请稍后再试。");
+//                        sendMessage(0x13);
+//                        sendMessage(0x14);
+//                    }
+//                });
+//
+//        //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
+//        request.setTag("getWeather");
+//        //设置超时时间
+//        request.setRetryPolicy(new DefaultRetryPolicy(50000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        //将请求加入全局队列中
+//        MyApplication.getHttpQueues().add(request);
     }
     public void SearchCity(String city){
-        JsonObjectRequest request = new JsonObjectRequest( DataDeal.url2+city+ DataDeal.password, null,
-                new Response.Listener<org.json.JSONObject>() {
-                    @Override
-                    public void onResponse(org.json.JSONObject jsonObject) {//jsonObject为请求返回的Json格式数据
-                        //Toast.makeText(MainActivity.this,jsonObject.toString(),Toast.LENGTH_LONG).show();
-                        JSONObject jb = JSONObject.fromObject(jsonObject.toString());
-                        String msg=jb.getString("msg");
-                        if(msg.equals("查询成功")){
-                            JSONObject jb2 = JSONObject.fromObject(jb.getString("result"));
-                            String weather=jb2.getString("HeWeather5");
-                            String json=weather.substring(1,weather.length()-1);
-                            System.out.println(json);
-                            JSONObject jb4 = JSONObject.fromObject(json);
-                            if(jb4.getString("status").equals("ok")){
-                                String json2=jb4.getString("basic");
-                                Gson gson=new Gson();
-                                City_basic basic=gson.fromJson(json2,City_basic.class);
-                                String cityname=null;
-                                if(basic.getProv().equals(basic.getCity())){
-                                    cityname=basic.getCity();
-                                }else{
-                                    cityname=basic.getProv()+" "+basic.getCity();
-                                }
-
-                                volleyGet(cityname,basic.getId());
-
-                            }else{
-                                Toast.makeText(WeatherActivity.this,"查找不到城市名",Toast.LENGTH_LONG).show();
-                            }
-                        }else{
-                            Toast.makeText(WeatherActivity.this,"查询失败",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //Toast.makeText(MainActivity.this,volleyError.toString(),Toast.LENGTH_LONG).show();
-                        minfo.setStatus("网络出错，请稍后再试。");
-                        sendMessage(0x13);
-                        sendMessage(0x14);
-                    }
-                });
+//        JsonObjectRequest request = new JsonObjectRequest( DataDeal.url2+city+ DataDeal.password, null,
+//                new Response.Listener<org.json.JSONObject>() {
+//                    @Override
+//                    public void onResponse(org.json.JSONObject jsonObject) {//jsonObject为请求返回的Json格式数据
+//                        //Toast.makeText(MainActivity.this,jsonObject.toString(),Toast.LENGTH_LONG).show();
+//                        JSONObject jb = JSONObject.fromObject(jsonObject.toString());
+//                        String msg=jb.getString("msg");
+//                        if(msg.equals("查询成功")){
+//                            JSONObject jb2 = JSONObject.fromObject(jb.getString("result"));
+//                            String weather=jb2.getString("HeWeather5");
+//                            String json=weather.substring(1,weather.length()-1);
+//                            System.out.println(json);
+//                            JSONObject jb4 = JSONObject.fromObject(json);
+//                            if(jb4.getString("status").equals("ok")){
+//                                String json2=jb4.getString("basic");
+//                                Gson gson=new Gson();
+//                                City_basic basic=gson.fromJson(json2,City_basic.class);
+//                                String cityname=null;
+//                                if(basic.getProv().equals(basic.getCity())){
+//                                    cityname=basic.getCity();
+//                                }else{
+//                                    cityname=basic.getProv()+" "+basic.getCity();
+//                                }
+//
+//                                volleyGet(cityname,basic.getId());
+//
+//                            }else{
+//                                Toast.makeText(WeatherActivity.this,"查找不到城市名", Toast.LENGTH_LONG).show();
+//                            }
+//                        }else{
+//                            Toast.makeText(WeatherActivity.this,"查询失败", Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError volleyError) {
+//                        //Toast.makeText(MainActivity.this,volleyError.toString(),Toast.LENGTH_LONG).show();
+//                        minfo.setStatus("网络出错，请稍后再试。");
+//                        sendMessage(0x13);
+//                        sendMessage(0x14);
+//                    }
+//                });
 
         //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
-        request.setTag("getCity");
+        //request.setTag("getCity");
         //设置超时时间
-        request.setRetryPolicy(new DefaultRetryPolicy(50000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //request.setRetryPolicy(new DefaultRetryPolicy(50000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         //将请求加入全局队列中
-        MyApplication.getHttpQueues().add(request);
+        //MyApplication.getHttpQueues().add(request);
     }
     public void InitGetui(){
-        PushManager.getInstance().initialize(this.getApplicationContext(), PushService.class);
-        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), IntentService.class);
+        //PushManager.getInstance().initialize(this.getApplicationContext(), PushService.class);
+        //PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), IntentService.class);
     }
     //天气接口函数
     private void getWeather(LocationInfo info) {
@@ -992,55 +972,55 @@ public class WeatherActivity extends AppCompatActivity implements hRecyclerViewA
         swipeRefreshLayout.setRefreshing(false);
     }
     private void showShare() {
-        OnekeyShare oks = new OnekeyShare();
+        //OnekeyShare oks = new OnekeyShare();
         //关闭sso授权
-        oks.disableSSOWhenAuthorize();
+        //oks.disableSSOWhenAuthorize();
 
         // 分享时Notification的图标和文字  2.5.9以后的版本不     调用此方法
         //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle(getString(R.string.share));
+        //oks.setTitle(getString(R.string.share));
         // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-        oks.setTitleUrl("http://sharesdk.cn");
+        //oks.setTitleUrl("http://sharesdk.cn");
         // text是分享文本，所有平台都需要这个字段
-        oks.setText(getTodayText());
+        //oks.setText(getTodayText());
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl("http://sharesdk.cn");
+        //oks.setUrl("http://sharesdk.cn");
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-        oks.setComment("我是测试评论文本");
+        //oks.setComment("我是测试评论文本");
         // site是分享此内容的网站名称，仅在QQ空间使用
-        oks.setSite(getString(R.string.app_name));
+        //oks.setSite(getString(R.string.app_name));
         // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-        oks.setSiteUrl("http://sharesdk.cn");
+        //oks.setSiteUrl("http://sharesdk.cn");
 
         // 启动分享GUI
-        oks.show(this);
+        //oks.show(this);
     }
     private String getTodayText(){
         return "城市:"+ncity.get(0)+"\n天气:"+mtxt.get(0)+"\n当前温度:"+ntmp.get(0)+"\n当天温度:"+mtmp.get(0)+"\n风力:"+mwind.get(0)+"\n空气质量:"+naqi.get(0);
     }
     private void InitRain(int num,int min_s,int max_s){
-        mDynamicWeatherView =new DynamicWeatherView(this);
-        mDynamicWeatherView.setType(new RainTypeImpl(this, mDynamicWeatherView,num,min_s,max_s));
+        //mDynamicWeatherView =new DynamicWeatherView(this);
+        //mDynamicWeatherView.setType(new RainTypeImpl(this, mDynamicWeatherView,num,min_s,max_s));
         Log.d("InitRain",Width+" "+DataDeal.height.get(0));
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(Width,DataDeal.height.get(0));
-        mDynamicWeatherView.setLayoutParams(lp);
-        relativeLayout.addView(mDynamicWeatherView);
+        //mDynamicWeatherView.setLayoutParams(lp);
+        //relativeLayout.addView(mDynamicWeatherView);
     }
     private void InitSnow(int num,int min_s,int max_s){
-        mDynamicWeatherView =new DynamicWeatherView(this);
-        mDynamicWeatherView.setType(new SnowTypeImpl(this, mDynamicWeatherView,num,min_s,max_s));
+        //mDynamicWeatherView =new DynamicWeatherView(this);
+        //mDynamicWeatherView.setType(new SnowTypeImpl(this, mDynamicWeatherView,num,min_s,max_s));
 
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(Width,DataDeal.height.get(0));
-        mDynamicWeatherView.setLayoutParams(lp);
-        relativeLayout.addView(mDynamicWeatherView);
+        //mDynamicWeatherView.setLayoutParams(lp);
+        //relativeLayout.addView(mDynamicWeatherView);
     }
     private void RemoveWeatherView(){
-        if(mDynamicWeatherView!=null){
-            relativeLayout.removeViewInLayout(mDynamicWeatherView);
-        }
+//        if(mDynamicWeatherView!=null){
+//            //relativeLayout.removeViewInLayout(mDynamicWeatherView);
+//        }
     }
     private  void setWeatherView(String weather){
         if(weather.equals("晴")){

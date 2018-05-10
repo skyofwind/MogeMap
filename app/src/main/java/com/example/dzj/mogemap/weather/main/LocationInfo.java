@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main;
+package com.example.dzj.mogemap.weather.main;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * Created by dzj on 2017/5/22.
  */
 
-public class LocationInfo implements Parcelable{
+public class LocationInfo implements Parcelable {
     private String Province;
     private String City;
     private String District;

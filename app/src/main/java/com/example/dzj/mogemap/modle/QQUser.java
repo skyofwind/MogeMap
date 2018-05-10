@@ -1,4 +1,4 @@
-package com.vincent.cloud.entity;
+package com.example.dzj.mogemap.modle;
 
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @class describe
  */
 
-public class QQUser implements Serializable{
+public class QQUser implements Serializable {
 
     private int ret;
     private String msg;

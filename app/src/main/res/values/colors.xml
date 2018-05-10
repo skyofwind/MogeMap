@@ -28,4 +28,25 @@
     <color name="white">#ffffff</color>
     
     <color name="text_run_no_selectd">#B1B1B1</color>
+    <color name="red">#ff3320</color>
+    <color name="green">#00d65a</color>
+
+    <color name="qq_color">#75c9ee</color>
+    <color name="xinlang">#ff8669</color>
+    <color name="arrow_right">#c9c9c9</color>
+    <color name="deviding">#f4f4f4</color>
+    <color name="my_gray">#999999</color>
+
+    <color name="button_off">#cfe7fb</color>
+    <color name="button_on">#0084ff</color>
+
+    <color name="sky_blue">#74cae0</color>
+    <color name="windowBackground">#fafafa</color>
+    <color name="menudialog_divider_color">#ededed</color>
+    <color name="menudialog_pressed_color">#e7e7e7</color>
+    <color name="menudialog_bg_gray">#f5f5f5</color>
+    <color name="gray">#b5b2b5</color>
+    <color name="mgray">#dadee2</color>
+    <color name="transparent">#0000</color>
+    <color name="translucent">#55000000</color>
 </resources>

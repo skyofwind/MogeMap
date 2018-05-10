@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.dzj.mogemap">
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <!-- 这个权限用于进行网络定位 -->
@@ -16,7 +17,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 访问网络，网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <!-- OpenGLES 2.0 -->
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
     <application
@@ -27,22 +29,61 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:hardwareAccelerated="true">
+        android:hardwareAccelerated="true"
+        tools:replace="android:name">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="azKopUjGGnp7dq1CAtm6pBz7EG2ZAbAn" />
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
-        <activity android:name=".activity.MainActivity">
+        <service android:name=".service.RunService" />
+
+        <activity android:name=".activity.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RunActivity">
-
+        <activity android:name=".activity.RunActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
         </activity>
-
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:noHistory="true"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent1106663555" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.tencent.connect.common.AssistActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".activity.BindPhoneActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.SubmitCodeActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.FriendsActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+        <activity android:name=".activity.RunRecordActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.WeekCountActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.MonthCountActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".weather.main_menu.MainmenuActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.RankingActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.AllRecordsActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".activity.PersonalInformationActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

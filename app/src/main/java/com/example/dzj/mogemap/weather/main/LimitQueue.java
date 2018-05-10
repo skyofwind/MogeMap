@@ -1,4 +1,4 @@
-package com.example.dzj.theweather.main;
+package com.example.dzj.mogemap.weather.main;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-public class LimitQueue<E> implements Queue<E>,Cloneable{
+public class LimitQueue<E> implements Queue<E>,Cloneable {
 	/**
 	 * 队列长度，实例化类的时候指定 
 	 */
@@ -24,7 +24,7 @@ public class LimitQueue<E> implements Queue<E>,Cloneable{
     /**
      * 入队
      */
-    @Override  
+    @Override
     public boolean offer(E e){
         if(set.isEmpty()){
             size=0;
@@ -47,7 +47,7 @@ public class LimitQueue<E> implements Queue<E>,Cloneable{
     /**
      * 出队 
      */
-    @Override  
+    @Override
     public E poll() {  
         return queue.poll();  
     }  
@@ -59,7 +59,7 @@ public class LimitQueue<E> implements Queue<E>,Cloneable{
      * @author SHANHY
      * @date   2015年11月9日
      */
-    public Queue<E> getQueue(){  
+    public Queue<E> getQueue(){
         return queue;  
     }  
       
@@ -74,82 +74,82 @@ public class LimitQueue<E> implements Queue<E>,Cloneable{
         return limit;  
     }  
   
-    @Override  
+    @Override
     public boolean add(E e) {  
         return queue.add(e);  
     }  
   
-    @Override  
+    @Override
     public E element() {  
         return queue.element();  
     }  
   
-    @Override  
+    @Override
     public E peek() {  
         return queue.peek();  
     }  
   
-    @Override  
+    @Override
     public boolean isEmpty() {  
         return queue.size() == 0 ? true : false;  
     }  
   
-    @Override  
+    @Override
     public int size() {  
         return queue.size();  
     }  
   
-    @Override  
+    @Override
     public E remove() {  
         return queue.remove();  
     }  
   
-    @Override  
-    public boolean addAll(Collection<? extends E> c) {  
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
         return queue.addAll(c);  
     }  
   
-    @Override  
+    @Override
     public void clear() {  
         queue.clear();  
     }  
   
-    @Override  
-    public boolean contains(Object o) {  
+    @Override
+    public boolean contains(Object o) {
         return queue.contains(o);  
     }  
   
-    @Override  
-    public boolean containsAll(Collection<?> c) {  
+    @Override
+    public boolean containsAll(Collection<?> c) {
         return queue.containsAll(c);  
     }  
   
-    @Override  
-    public Iterator<E> iterator() {  
+    @Override
+    public Iterator<E> iterator() {
         return queue.iterator();  
     }  
   
-    @Override  
-    public boolean remove(Object o) {  
+    @Override
+    public boolean remove(Object o) {
         return queue.remove(o);  
     }  
   
-    @Override  
-    public boolean removeAll(Collection<?> c) {  
+    @Override
+    public boolean removeAll(Collection<?> c) {
         return queue.removeAll(c);  
     }  
   
-    @Override  
-    public boolean retainAll(Collection<?> c) {  
+    @Override
+    public boolean retainAll(Collection<?> c) {
         return queue.retainAll(c);  
     }  
   
-    @Override  
-    public Object[] toArray() {  
+    @Override
+    public Object[] toArray() {
         return queue.toArray();  
     }  
   
-    @Override  
+    @Override
     public <T> T[] toArray(T[] a) {  
         return queue.toArray(a);  
     }  

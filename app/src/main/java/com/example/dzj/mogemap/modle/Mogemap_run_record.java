@@ -1,9 +1,9 @@
-package org.studyplatform.model;
+package com.example.dzj.mogemap.modle;
 
 import java.util.Date;
 
 public class Mogemap_run_record {
-    private Integer id;
+    private Integer rid;
 
     private String runtype;
 
@@ -13,16 +13,19 @@ public class Mogemap_run_record {
 
     private Integer calories;
 
+    //@JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date date;
 
     private String json;
 
+    private String phone;
+
     public Integer getId() {
-        return id;
+        return rid;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.rid = id;
     }
 
     public String getRuntype() {
@@ -71,5 +74,13 @@ public class Mogemap_run_record {
 
     public void setJson(String json) {
         this.json = json == null ? null : json.trim();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

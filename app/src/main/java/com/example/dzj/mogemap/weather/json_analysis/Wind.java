@@ -1,11 +1,11 @@
-package com.example.dzj.theweather.json_analysis;
+package com.example.dzj.mogemap.weather.json_analysis;
 
 /**
  * Created by dzj on 2016/11/8.
  */
 
 public class Wind {
-    private  String dir;//风向
+    private String dir;//风向
     private String sc;//风力
 
     public String getDir(){return dir;}

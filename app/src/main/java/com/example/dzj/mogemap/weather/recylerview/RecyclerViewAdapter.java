@@ -1,6 +1,7 @@
-package com.example.dzj.theweather.recylerview;
+package com.example.dzj.mogemap.weather.recylerview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,44 +11,32 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.dzj.theweather.R;
-import com.example.dzj.theweather.voice.Voice;
+import com.example.dzj.mogemap.R;
+import com.example.dzj.mogemap.activity.MainActivity;
+import com.example.dzj.mogemap.fragment.WeatherManagerFragment;
+import com.example.dzj.mogemap.weather.main_menu.MainmenuActivity;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import static com.example.dzj.theweather.voice.Voice.Switchcontrol;
-import static com.example.dzj.theweather.voice.Voice.bgmusic;
-import static com.example.dzj.theweather.voice.Voice.control1;
-import static com.example.dzj.theweather.voice.Voice.control2;
-import static com.example.dzj.theweather.voice.Voice.control3;
-import static com.example.dzj.theweather.voice.Voice.mp;
-import static com.example.dzj.theweather.voice.Voice.multiple;
-import static com.example.dzj.theweather.voice.Voice.play;
-import static com.example.dzj.theweather.voice.Voice.setVoice;
 
 
 /**
  * Created by dzj on 2016/11/7.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<String> mtime,mtmp,mwind,mtxt,city,ntmp,naqi,ntrav,nflu;
     private List<Integer> micon,mheight,bgpic,bg_min,color;
     private LayoutInflater mInflater;
     Context mcontext;
     RecyclerView.ViewHolder temp;
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
-    @Override
-    public void onClick(View v) {
-        if(mOnItemClickListener!=null){
-            mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
-        }
-    }
+    private int iconType = 0;
 
     public static interface OnRecyclerViewItemClickListener{
-        void onItemClick(View view , int tag);
+        void onItemClick(View view, int tag);
     }
 
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener){
@@ -78,7 +67,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         color=tcolor;
     }
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         if (viewType == ITEM_TYPE.ITEM2.ordinal()) {
             return new Item2ViewHolder(mInflater.inflate(R.layout.today,parent,false));
         }
@@ -86,14 +75,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return new Item1ViewHolder(mInflater.inflate(R.layout.item_home,parent,false));
         }
     }
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position){
-        control1=false;control2=false;control3=false;
-        final Calendar mCalendar=Calendar.getInstance();
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position){
+        //control1=false;control2=false;control3=false;
+        final Calendar mCalendar= Calendar.getInstance();
         mCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-        String Month=String.valueOf(mCalendar.get(Calendar.MONTH) + 1);// 获取当前月份
-        String mDay=String.valueOf(mCalendar.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
-        String mWay=String.valueOf(mCalendar.get(Calendar.DAY_OF_WEEK));
-        String mHour=String.valueOf(mCalendar.get(Calendar.HOUR_OF_DAY));
+        String Month= String.valueOf(mCalendar.get(Calendar.MONTH) + 1);// 获取当前月份
+        String mDay= String.valueOf(mCalendar.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
+        String mWay= String.valueOf(mCalendar.get(Calendar.DAY_OF_WEEK));
+        String mHour= String.valueOf(mCalendar.get(Calendar.HOUR_OF_DAY));
         int Minuts=mCalendar.get(Calendar.MINUTE);
         String wee=getWeek(mWay);
         if(holder instanceof Item1ViewHolder){
@@ -104,11 +93,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((Item1ViewHolder)holder).icon.setImageResource(micon.get(position));
             ((Item1ViewHolder)holder).ly.setBackgroundResource(bg_min.get(position));
         }else if(holder instanceof Item2ViewHolder){
-            if(multiple==true&&play==true){
-                if(mp!=null){
-                    Voice.stopMusic();
-                }
-            }
             temp=holder;
             String time2;
             if(Minuts<10){
@@ -130,43 +114,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((Item2ViewHolder)holder).wind.setText(mwind.get(position));
             ((Item2ViewHolder)holder).icon.setImageResource(micon.get(position));
             ((Item2ViewHolder)holder).city.setText(city.get(position));
-            ((Item2ViewHolder)holder).city.setOnClickListener(this);
+            ((Item2ViewHolder)holder).cityItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mOnItemClickListener!=null){
+                        mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
+//                        if(iconType == 0){
+//                            iconType = 1;
+//                            ((Item2ViewHolder)holder).cityIcon.setImageDrawable(mcontext.getDrawable(R.drawable.arrow_up_gray));
+//                        }else {
+//                            iconType = 0;
+//                            ((Item2ViewHolder)holder).cityIcon.setImageDrawable(mcontext.getDrawable(R.drawable.arrow_down_gray));
+//                        }
+                    }
+                }
+            });
             //((Item2ViewHolder)holder).select.setOnClickListener(this);
-            ((Item2ViewHolder)holder).city.setTag(0);
+            ((Item2ViewHolder)holder).cityItem.setTag(0);
             //((Item2ViewHolder)holder).select.setTag(0);
             ((Item2ViewHolder)holder).ntmp.setText(ntmp.get(position));
             ((Item2ViewHolder)holder).aqi.setText(naqi.get(position));
-            //判断是否显示声音按钮
-            if(Switchcontrol()){
-                setVoice(mtxt.get(position));
-                ((Item2ViewHolder)holder).voice.setVisibility(View.VISIBLE);
-                if(control1){
-                    Voice.startMusic(R.raw.thunder_rain,mcontext);
-                }else if(control2){
-                    Voice.startMusic(R.raw.rain,mcontext);
-                }else if(control3){
-                    Voice.startMusic(R.raw.rainstorm,mcontext);
-                }else{
-                    ((Item2ViewHolder)holder).voice.setVisibility(View.GONE);
-                }
-                ((Item2ViewHolder)holder).voice.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(play){
-                            Voice.stopMusic();
-                            ((Item2ViewHolder)temp).voice.setImageResource(R.drawable.voice_pause);
-                        }else if(!play){
-                            Voice.startMusic(bgmusic,mcontext);
-                            ((Item2ViewHolder)temp).voice.setImageResource(R.drawable.voice_play);
-                        }
-                    }
-                });
-            }else{
-                if(play){
-                    Voice.stopMusic();
-                }
-                ((Item2ViewHolder)holder).voice.setVisibility(View.GONE);
-            }
 
             //更改颜色
             ((Item2ViewHolder)holder).city.setTextColor(color.get(position));
@@ -179,6 +146,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((Item2ViewHolder)holder).aqi.setTextColor(color.get(position));
             ((Item2ViewHolder)holder).trav.setTextColor(color.get(position));
             ((Item2ViewHolder)holder).flu.setTextColor(color.get(position));
+
+            ((Item2ViewHolder)holder).rightMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity)mcontext).startActivityForResult(new Intent(mcontext,MainmenuActivity.class), WeatherManagerFragment.REQUEST_CODE);
+                }
+            });
         }
 
     }
@@ -210,8 +184,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     //today message
     public static class Item2ViewHolder extends RecyclerView.ViewHolder{
         TextView city,time,ntmp,weather_text,tmp,wind,date,aqi,trav,flu;
-        ImageView icon,voice;
+        ImageView icon,cityIcon, rightMenu;
         RelativeLayout ll;
+        LinearLayout cityItem;
         //ImageView select;
         public Item2ViewHolder(View itemView){
             super(itemView);
@@ -227,7 +202,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             wind=(TextView)itemView.findViewById(R.id.wind);
             icon=(ImageView)itemView.findViewById(R.id.icon);
             ll=(RelativeLayout)itemView.findViewById(R.id.ll);
-            voice=(ImageView)itemView.findViewById(R.id.voice);
+            cityIcon=(ImageView)itemView.findViewById(R.id.city_icon);
+            rightMenu = (ImageView)itemView.findViewById(R.id.right_menu);
+            cityItem = (LinearLayout)itemView.findViewById(R.id.city_item);
             //select=(ImageView)itemView.findViewById(R.id.city_select);
         }
     }
